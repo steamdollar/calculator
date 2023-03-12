@@ -2,15 +2,15 @@ import { createSlice, current } from "@reduxjs/toolkit"
 
 const initialState = {
     value : {
-        loss : 0, 
+        loss : null, 
         position : "n/a", 
-        entry : 0, 
-        stopLoss : 0, 
-        lossDiff : 0,
-        leverage : 0,
-        takeProfit : 0,
-        profitDiff : 0,
-        sr : 0 
+        entry : null, 
+        stopLoss : null, 
+        lossDiff : null,
+        leverage : null,
+        takeProfit : null,
+        profitDiff : null,
+        sr : null 
     }
 }
 
@@ -20,7 +20,7 @@ export const calculatorSlice = createSlice({
     reducers : {
         inputLoss : (state, action) => {
             state.value.loss = action.payload
-            // console.log(action)
+            console.log(action.payload)
             // console.log(current(state))
         },
         selectPosition : (state, action) => {
