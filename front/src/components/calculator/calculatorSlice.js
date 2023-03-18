@@ -2,15 +2,16 @@ import { createSlice, current } from "@reduxjs/toolkit"
 
 const initialState = {
     value : {
-        loss : null, 
+        loss : "", 
         position : "n/a", 
-        entry : null, 
-        stopLoss : null, 
-        lossDiff : null,
-        leverage : null,
-        takeProfit : null,
-        profitDiff : null,
-        sr : null 
+        entry : "", 
+        stopLoss : "", 
+        lossDiff : "",
+        leverage : "",
+        takeProfit : "",
+        profitDiff : "",
+        sr : "" ,
+        ticker : "",
     }
 }
 
@@ -18,6 +19,7 @@ export const calculatorSlice = createSlice({
     name : "calculator",
     initialState,
     reducers : {
+        // TODO : 숫자값 or 문자값만 타이핑 가능하도록
         inputLoss : (state, action) => {
             state.value.loss = action.payload
             console.log(action.payload)
@@ -46,10 +48,13 @@ export const calculatorSlice = createSlice({
         },
         showSR : (state, action) => {
             state.value.sr = action.payload
+        },
+        selectTicker : (state, action) => {
+            state.value.ticker = action.payload
         }
-
     }
 })
 
-export const {selectPosition, inputLoss, selectEntry, selectSl, showLeverage, showLossDiff, showProfitDiff, showSR, selectTP} = calculatorSlice.actions
+export const {selectPosition, inputLoss, selectEntry, selectSl, 
+    showLeverage, showLossDiff, showProfitDiff, showSR, selectTP, selectTicker} = calculatorSlice.actions
 export default calculatorSlice.reducer
