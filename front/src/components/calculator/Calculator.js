@@ -19,9 +19,11 @@ const FieldTable = styled.div`
 `
 
 const FieldDetail = styled.div`
-    min-width:7%;
+    min-width:9%;
     border : 1px solid red;
+    font-size : 20px;
     > div {
+        margin-bottom : 8%;
         > input {
             width : 80px;
         }
@@ -36,7 +38,11 @@ const SelectPosition = styled.select`
 
 export function Calculator() {
     const dispatch = useDispatch()
-    const fullValue = useSelector((state) => state.calculator)
+    const fullValue = useSelector((state) => state.calculator.value)
+
+    // TODO : 이거 꼭 이렇게 해야하나? 다 일일히 써줘야 함? 
+    // 위에 쓴 fullValue만 써서 할 수는 없나?
+    // 그럼 아래 함수들의 파라미터가 더러워질 것 같긴 한데..
     const position = useSelector((state)=> state.calculator.value.position)
     const loss = useSelector((state) => state.calculator.value.loss)
     const entry = useSelector((state)=> state.calculator.value.entry)
@@ -52,8 +58,8 @@ export function Calculator() {
     useEffect(()=>{
         dispatch(showLossDiff(calculateLossDiff(position, loss, entry, stopLoss)[0]))
         dispatch(showLeverage(calculateLossDiff(position, loss, entry, stopLoss)[1]))
-        dispatch(showProfitDiff(calculateProfitDiff(position, entry, takeProfit)))
-        dispatch(showSR(calculateSR(profitDiff, lossDiff)))
+        dispatch(showProfitDiff(calculateProfitDiff(position, entry, takeProfit, lossDiff)[0]))
+        dispatch(showSR(calculateProfitDiff(position, entry, takeProfit, lossDiff)[1]))
     }, [position, loss, entry, stopLoss, takeProfit])
 
     const calculation = (fullValue) => {
@@ -83,7 +89,6 @@ export function Calculator() {
 
     return (
         <CalculateModule>
-            {/* column 명 */}
             <FieldTable>
                 <FieldDetail> 
                     <div> position </div>
@@ -91,11 +96,20 @@ export function Calculator() {
                         <SelectPosition 
                             onChange={e => dispatch(selectPosition(e.target.value))}
                             value={position} 
+                            style={{marginBottom : "8%"}}
                         >
-                            <option>choose long/short</option>
+                            <option value="n/a">choose long/short</option>
                             <option value="long">Long</option>
                             <option value="short">Short</option>
                         </SelectPosition>
+                        <div>
+                        { position === "n/a"
+                            ? 
+                                <span style={{color:"red"}}> choose position </span>
+                            : 
+                                <span style={{color:"green"}}>good</span>
+                        }
+                        </div>
 
                     </div>
                 </FieldDetail>
@@ -108,6 +122,14 @@ export function Calculator() {
                             value={loss}
                         />
                     </div>
+                    <div>
+                        { isProperPrice(loss) 
+                            ? 
+                                <span style={{color:"green"}}> good </span>
+                            : 
+                                <span style={{color:"red"}}>error!!</span>
+                        }
+                    </div>
                 </FieldDetail>
                 <FieldDetail>
                     <div> entry ($)</div>
@@ -118,6 +140,14 @@ export function Calculator() {
                             value={entry}
                         />
                     </div>
+                    <div>
+                        { isProperPrice(entry) 
+                            ? 
+                                <span style={{color:"green"}}> good </span>
+                            : 
+                                <span style={{color:"red"}}>error!!</span>
+                        }
+                    </div>
                 </FieldDetail>
                 <FieldDetail>
                     <div> SL ($)</div>
@@ -127,6 +157,14 @@ export function Calculator() {
                                 onChange={handleSl}
                                 value={stopLoss}
                         />
+                    </div>
+                    <div>
+                        { isProperPrice(stopLoss) 
+                            ? 
+                                <span style={{color:"green"}}> good </span>
+                            : 
+                                <span style={{color:"red"}}>error!!</span>
+                        }
                     </div>
                 </FieldDetail>
                 <FieldDetail>
@@ -172,6 +210,15 @@ export function Calculator() {
                             onChange={handleTicker}
                             value={ticker}
                         />
+                    </div>
+                    <div>
+                        {
+                            ticker 
+                                ? 
+                                    <span style={{color:"green"}}> good </span>
+                                :
+                                    <span style={{color:"red"}}> input ticker </span>
+                        }
                     </div>
                 </FieldDetail>
 
