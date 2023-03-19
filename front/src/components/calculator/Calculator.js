@@ -1,39 +1,66 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { selectPosition, inputLoss, selectEntry, selectSl, showLossDiff, showLeverage } from "./calculatorSlice";
+import { selectPosition, inputLoss, selectEntry, selectSl, showLossDiff, showLeverage, selectTP, showProfitDiff, showSR, selectTicker } from "./calculatorSlice";
 import styled from "styled-components"
-import { calculateLossDiff } from "../formula";
+import { calculateLossDiff, calculateProfitDiff, calculateSR } from "../formula";
+import { isProperPrice } from "../../util/checkValue";
+
+const CalculateModule = styled.div`
+    margin : "0 auto";
+    padding : "5px 10px";
+    border : 1px solid palevioletred;
+    text-align:center;
+`
+
+const FieldTable = styled.div`
+    display:flex;
+    justify-content : space-between;
+    border : 1px solid black;
+`
+
+const FieldDetail = styled.div`
+    min-width:9%;
+    border : 1px solid red;
+    font-size : 20px;
+    > div {
+        margin-bottom : 8%;
+        > input {
+            width : 80px;
+        }
+    }
+`
+
+const SelectPosition = styled.select`
+    display: inline ;
+    width : 100px;
+`
+
 
 export function Calculator() {
     const dispatch = useDispatch()
-    const fullValue = useSelector((state) => state.calculator)
+    const fullValue = useSelector((state) => state.calculator.value)
+
+    // TODO : 이거 꼭 이렇게 해야하나? 다 일일히 써줘야 함? 
+    // 위에 쓴 fullValue만 써서 할 수는 없나?
+    // 그럼 아래 함수들의 파라미터가 더러워질 것 같긴 한데..
     const position = useSelector((state)=> state.calculator.value.position)
     const loss = useSelector((state) => state.calculator.value.loss)
     const entry = useSelector((state)=> state.calculator.value.entry)
     const stopLoss = useSelector((state) => state.calculator.value.stopLoss)
     const lossDiff = useSelector((state) => state.calculator.value.lossDiff)
     const leverage = useSelector((state)=> state.calculator.value.leverage)
+    const takeProfit = useSelector((state) => state.calculator.value.takeProfit)
+    const profitDiff = useSelector((state) => state.calculator.value.profitDiff)
+    const sr = useSelector((state) => state.calculator.value.sr)
+    const ticker = useSelector((state) => state.calculator.value.ticker)
 
-    const NameTable = styled.div`
-        display : flex;
-        justify-content:space-evenly;
-        margin : 0 10px 10px 10px;
-
-        > span {
-            display : inline-block;
-            width: 100px !important;
-        }
-    `
-
-    const SelectPosition = styled.select`
-        display: inline ;
-        width : 100px;
-    `
 
     useEffect(()=>{
         dispatch(showLossDiff(calculateLossDiff(position, loss, entry, stopLoss)[0]))
         dispatch(showLeverage(calculateLossDiff(position, loss, entry, stopLoss)[1]))
-    }, [position, loss, entry, stopLoss])
+        dispatch(showProfitDiff(calculateProfitDiff(position, entry, takeProfit, lossDiff)[0]))
+        dispatch(showSR(calculateProfitDiff(position, entry, takeProfit, lossDiff)[1]))
+    }, [position, loss, entry, stopLoss, takeProfit])
 
     const calculation = (fullValue) => {
         console.log(fullValue)
@@ -41,7 +68,6 @@ export function Calculator() {
 
     const handleLoss = (e) => {
         dispatch(inputLoss(e.target.value))
-        e.target.focus()
     }
 
     const handleEntry = (e) => {
@@ -51,75 +77,154 @@ export function Calculator() {
     const handleSl = (e) => {
         dispatch(selectSl(e.target.value))
     }
+
+    const handleTP = (e) => {
+        dispatch(selectTP(e.target.value))
+    }
+
+    const handleTicker =(e) => {
+        dispatch(selectTicker(e.target.value))
+    }
     
 
     return (
-        <div style={{margin : "0 auto", padding : "5px 10px", border : "1px solid palevioletred"}}>
-            {/* column 명 */}
-            <NameTable>
-                <span>position</span>
-                <span> total loss tolerance </span>
-                <span> entry </span>
-                <span> SL </span>
-                <span> stoploss: diff </span>
-                <span> proper leverage </span>
-                <span> TP </span>
-                <span> takeProfit: diff</span>
-                <span> S/R </span>
-            </NameTable>
-            {/* input boxes */}
-            <div style={{display : "flex", justifyContent:"space-evenly", margin : "0 10px 10px 10px"}}>
-                <SelectPosition 
-                    onChange={e => dispatch(selectPosition(e.target.value))}
-                    value={position} 
-                >
-                    <option>choose long/short</option>
-                    <option value="long">Long</option>
-                    <option value="short">Short</option>
-                </SelectPosition>
-                <span>
-                    <input
-                        style={{width: "100px"}}
-                        onChange={handleLoss}
-                        placeholder="input loss tolerance"
-                        value={loss}
-                    />
-                </span>
-                <span>
-                    <input  
-                    style={{width: "100px"}}                  
-                        placeholder="entry price"
-                        onChange={handleEntry} 
-                        value={entry}
-                    />
-                </span>
-                <span>
-                    <input 
-                    style={{width: "100px"}}
-                        placeholder="input stop loss"
-                        onChange={handleSl}
-                        value={stopLoss}
-                    />
-                </span>
-                <span style={{width: "100px", textAlign:"center"}}>
-                    <span>
-                        {lossDiff}
-                    </span>
-                </span>
-                <span>
-                    <span>{leverage}</span>
-                </span>
-                <span>
-                    <span>TP</span>
-                </span>
-                <span>
-                    <span>takeprofitdiff</span>
-                </span>
-                <span>
-                    <span>S/R</span>
-                </span>
-            </div>
+        <CalculateModule>
+            <FieldTable>
+                <FieldDetail> 
+                    <div> position </div>
+                    <div> 
+                        <SelectPosition 
+                            onChange={e => dispatch(selectPosition(e.target.value))}
+                            value={position} 
+                            style={{marginBottom : "8%"}}
+                        >
+                            <option value="n/a">choose long/short</option>
+                            <option value="long">Long</option>
+                            <option value="short">Short</option>
+                        </SelectPosition>
+                        <div>
+                        { position === "n/a"
+                            ? 
+                                <span style={{color:"red"}}> choose position </span>
+                            : 
+                                <span style={{color:"green"}}>good</span>
+                        }
+                        </div>
+
+                    </div>
+                </FieldDetail>
+                <FieldDetail>
+                    <div> tolerance (%)</div>
+                    <div>
+                        <input
+                            onChange={handleLoss}
+                            placeholder="input loss tolerance"
+                            value={loss}
+                        />
+                    </div>
+                    <div>
+                        { isProperPrice(loss) 
+                            ? 
+                                <span style={{color:"green"}}> good </span>
+                            : 
+                                <span style={{color:"red"}}>error!!</span>
+                        }
+                    </div>
+                </FieldDetail>
+                <FieldDetail>
+                    <div> entry ($)</div>
+                    <div> 
+                        <input                
+                            placeholder="entry price"
+                            onChange={handleEntry} 
+                            value={entry}
+                        />
+                    </div>
+                    <div>
+                        { isProperPrice(entry) 
+                            ? 
+                                <span style={{color:"green"}}> good </span>
+                            : 
+                                <span style={{color:"red"}}>error!!</span>
+                        }
+                    </div>
+                </FieldDetail>
+                <FieldDetail>
+                    <div> SL ($)</div>
+                    <div> 
+                        <input 
+                                placeholder="input stop loss"
+                                onChange={handleSl}
+                                value={stopLoss}
+                        />
+                    </div>
+                    <div>
+                        { isProperPrice(stopLoss) 
+                            ? 
+                                <span style={{color:"green"}}> good </span>
+                            : 
+                                <span style={{color:"red"}}>error!!</span>
+                        }
+                    </div>
+                </FieldDetail>
+                <FieldDetail>
+                    <div> loss Diff (%)</div>
+                    <div>{lossDiff}</div>
+                </FieldDetail>
+                <FieldDetail>
+                    <div> leverage </div>
+                    <div> {leverage}</div>
+                </FieldDetail>
+                <FieldDetail>
+                    <div> TP ($) </div>
+                    <div> 
+                        <input 
+                            placeholder="input TP"
+                            onChange={handleTP}
+                            value={takeProfit}
+                        />
+                    </div>
+                    <div>
+                        { isProperPrice(takeProfit) 
+                            ? 
+                                <span style={{color:"green"}}> good </span>
+                            : 
+                                <span style={{color:"red"}}>error!!</span>
+                        }
+                    </div>
+
+                </FieldDetail>
+                <FieldDetail>
+                    <div> profitDiff (%)</div>
+                    <div> {profitDiff} </div>
+                </FieldDetail>
+                <FieldDetail>
+                    <div> s/r</div>
+                    <div> {sr} </div>
+                </FieldDetail>
+                <FieldDetail>
+                    <div> ticker </div>
+                    <div>
+                        <input 
+                            placeholder="input ticker"
+                            onChange={handleTicker}
+                            value={ticker}
+                        />
+                    </div>
+                    <div>
+                        {
+                            ticker 
+                                ? 
+                                    <span style={{color:"green"}}> good </span>
+                                :
+                                    <span style={{color:"red"}}> input ticker </span>
+                        }
+                    </div>
+                </FieldDetail>
+
+
+            </FieldTable>
             <button onClick={() => calculation(fullValue)}> calculate! </button>
-        </div>
+        </CalculateModule>
       )
 }
