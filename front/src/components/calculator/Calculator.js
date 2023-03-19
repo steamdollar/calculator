@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { selectPosition, inputLoss, selectEntry, selectSl, showLossDiff, showLeverage, selectTP, showProfitDiff, showSR, selectTicker } from "./calculatorSlice";
+import { selectPosition, inputLoss, selectEntry, selectSl, showLossDiff, showLeverage, selectTP, showProfitDiff, showSR, selectTicker, saveTradeInfo } from "./calculatorSlice";
 import styled from "styled-components"
 import { calculateLossDiff, calculateProfitDiff } from "./formula";
 import { isProperPrice } from "../../util/checkValue";
@@ -62,9 +62,6 @@ export function Calculator() {
         dispatch(showSR(calculateProfitDiff(position, entry, takeProfit, lossDiff)[1]))
     }, [position, loss, entry, stopLoss, takeProfit])
 
-    const calculation = (fullValue) => {
-        console.log(fullValue)
-    }
 
     const handleLoss = (e) => {
         dispatch(inputLoss(e.target.value))
@@ -86,6 +83,9 @@ export function Calculator() {
         dispatch(selectTicker(e.target.value))
     }
     
+    const saveInfo = async (info) => {
+        dispatch(saveTradeInfo(info))
+    }
 
     return (
         <CalculateModule>
@@ -224,7 +224,7 @@ export function Calculator() {
 
 
             </FieldTable>
-            <button onClick={() => calculation(fullValue)}> calculate! </button>
+            <button onClick={() => saveInfo(fullValue)}> save! </button>
         </CalculateModule>
       )
 }
