@@ -16,7 +16,7 @@ export const calculateLossDiff = (position, loss, entry, stoploss) => {
 
 export const calculateProfitDiff = (position, entry, tp, lossDiff) => {
     if(position === "n/a" || entry === (null || "") || tp === (null || "")) {
-        return "n/a"
+        return ["n/a","n/a"]
     }
     let profitDiff = ""
     if (position === "long") {
