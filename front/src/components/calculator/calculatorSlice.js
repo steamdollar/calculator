@@ -4,15 +4,15 @@ import { request } from "../../util/axios"
 
 const initialState = {
     value : {
-        loss : "", 
+        loss : 0, 
         position : "n/a", 
-        entry : "", 
-        stopLoss : "", 
-        lossDiff : "",
-        leverage : "",
-        takeProfit : "",
-        profitDiff : "",
-        sr : "" ,
+        entry : 0, 
+        stopLoss : 0, 
+        lossDiff : 0,
+        leverage : 0,
+        takeProfit : 0,
+        profitDiff : 0,
+        sr : 0 ,
         ticker : "",
     },
     status : null

@@ -1,6 +1,6 @@
 const axios = require("axios")
 
-const config = {
+export const config = {
     baesURL : process.env.REACT_APP_BACKEND_SERVER,
     headers : {
         withCredentials : true,
