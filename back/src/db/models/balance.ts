@@ -3,16 +3,15 @@ import { Coin } from './coin';
 import { Wallet } from './wallet';
 
 export class Balance extends Model {
-    public addr!: string;
+    public wallet!: string;
     public coin!: string;
-    public balance!: number;
+    public amount!: number;
 }
 
-export function initializeBalance (sequelize : Sequelize) {
+export function initializeBalance(sequelize: Sequelize) {
     Balance.init({
         wallet: {
             type: DataTypes.CHAR(42),
-            primaryKey: true,
             references: {
                 model: Wallet,
                 key: 'addr',
@@ -28,20 +27,20 @@ export function initializeBalance (sequelize : Sequelize) {
     }, {
         tableName: 'balance',
         sequelize,
-        timestamps : false
+        timestamps: false
     });
 }
 
 export function walletAssociatedBalance() {
     Balance.belongsTo(Wallet, {
-        foreignKey : "wallet",
-        as : "walletBalance"
+        foreignKey: "wallet",
+        as: "walletBalance"
     })
 }
 
 export function associateCoin() {
     Balance.hasMany(Coin, {
-        foreignKey : "name",
-        as : "coinName"
+        foreignKey: "name",
+        as: "coinName"
     })
 }

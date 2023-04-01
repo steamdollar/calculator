@@ -6,10 +6,14 @@ export class Coin extends Model {
     public listed_market!: string;
 }
 
-export function initializeCoin( sequelize : Sequelize) {
+export function initializeCoin(sequelize: Sequelize) {
     Coin.init({
         name: {
             type: DataTypes.STRING(16),
+            references: {
+                model: Balance,
+                key: 'coin',
+            },
         },
         listed_market: {
             type: DataTypes.STRING(16),
@@ -17,13 +21,13 @@ export function initializeCoin( sequelize : Sequelize) {
     }, {
         tableName: 'coin',
         sequelize,
-        timestamps : false
+        timestamps: false
     });
 }
 
 export function balanceAssociatedCoin() {
-    Coin.belongsTo( Balance, {
-        foreignKey : "coin",
-        as : "coinName"
+    Coin.belongsTo(Balance, {
+        foreignKey: "name",
+        as: "coinName"
     })
 }
