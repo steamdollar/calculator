@@ -1,18 +1,21 @@
-import { createSlice, current } from "@reduxjs/toolkit"
+import { createSlice, current, createAsyncThunk } from "@reduxjs/toolkit"
+import axios from "axios"
+import { request } from "../../util/axios"
 
 const initialState = {
     value : {
-        loss : "", 
+        loss : 0, 
         position : "n/a", 
-        entry : "", 
-        stopLoss : "", 
-        lossDiff : "",
-        leverage : "",
-        takeProfit : "",
-        profitDiff : "",
-        sr : "" ,
+        entry : 0, 
+        stopLoss : 0, 
+        lossDiff : 0,
+        leverage : 0,
+        takeProfit : 0,
+        profitDiff : 0,
+        sr : 0 ,
         ticker : "",
-    }
+    },
+    status : null
 }
 
 export const calculatorSlice = createSlice({
@@ -52,8 +55,31 @@ export const calculatorSlice = createSlice({
         selectTicker : (state, action) => {
             state.value.ticker = action.payload
         }
+    },
+    extraReducers: (state) => {
+        state.addCase(saveTradeInfo.fulfilled, (state, action) => {
+            state.status = null
+        })
+        .addCase(saveTradeInfo.pending, (state, action) => {
+            state.status = "loading"
+        })
+        .addCase(saveTradeInfo.rejected, (state, action) => {
+            state.status = null
+        })
     }
 })
+
+export const saveTradeInfo = createAsyncThunk(
+        "POST/SAVETRADING", async (tradingInfo) => {
+            console.log(tradingInfo)
+            const response = await axios.post(`${process.env.REACT_APP_BACKEND_SERVER}/as`,
+                tradingInfo
+                
+            )
+
+            console.log(response.data)
+        }
+)
 
 export const {selectPosition, inputLoss, selectEntry, selectSl, 
     showLeverage, showLossDiff, showProfitDiff, showSR, selectTP, selectTicker} = calculatorSlice.actions
