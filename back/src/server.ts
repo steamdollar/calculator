@@ -1,5 +1,5 @@
 import express from 'express'
-import {sequelize, setUpDatabase} from './db/index'
+import { sequelize, setUpDatabase } from './db/index'
 import cors from 'cors'
 
 
@@ -12,12 +12,12 @@ setUpDatabase(sequelize)
 
 
 // received data parsing optionss
-app.use(cors({ origin: process.env.FRONTEND_ADDRESS, credentials: true}))
+app.use(cors({ origin: process.env.FRONTEND_ADDRESS, credentials: true }))
 app.use(express.json())
 
 
 // routers..
-app.get('/', (req, res)=> {
+app.get('/', (req, res) => {
     res.send('hello calculator')
 })
 
@@ -26,19 +26,20 @@ app.post('/as', (req, res) => {
     const tradingInfo = req.body
 
     const response = {
-        status : "success"
+        status: "success"
     }
     res.json(response)
 })
 
 app.post("/testdb", (req, res) => {
-    console.log("q")
-    
+    const sql = `select * from wallets`
+
+
 })
 
 app.listen(process.env.BACKEND_PORT, async () => {
     try {
-        await sequelize.sync({force : false})
+        await sequelize.sync({ force: true })
     } catch (e) {
         console.log(e)
     }
