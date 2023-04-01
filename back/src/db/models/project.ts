@@ -1,12 +1,12 @@
 import { DataTypes, Model, Sequelize } from 'sequelize';
 import { AirDrop } from './airdrop';
 export class Project extends Model {
-  public name!: string;
-  public link!: string;
-  public status!: string;
+	public name!: string;
+	public link!: string;
+	public status!: string;
 }
 
-export function initializeProject (sequelize : Sequelize) {
+export function initializeProject(sequelize: Sequelize) {
 	Project.init(
 		{
 			name: {
@@ -23,14 +23,14 @@ export function initializeProject (sequelize : Sequelize) {
 		{
 			tableName: 'project',
 			sequelize,
-			timestamps : false
+			timestamps: false
 		}
-	);      
+	);
 }
 
 export function airDropAssociatedProject() {
 	Project.belongsTo(AirDrop, {
-		foreignKey : "project",
-		as : "projects"
+		foreignKey: "name",
+		as: "projectName"
 	})
 }

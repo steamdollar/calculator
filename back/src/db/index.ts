@@ -18,7 +18,7 @@ export const sequelize = new Sequelize({
     port: parseInt(process.env.DB_PORT),
 })
 
-export const setUpDatabase = ( sequelize : Sequelize) => {
+export const setUpDatabase = (sequelize: Sequelize) => {
     initializeWallet(sequelize)
     initializeTrading(sequelize)
     initializeAirDrop(sequelize)
