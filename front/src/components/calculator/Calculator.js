@@ -84,7 +84,32 @@ export function Calculator() {
     }
     
     const saveInfo = async (info) => {
-        dispatch(saveTradeInfo(info))
+        const { position, loss, entry, stopLoss, lossDiff, leverage, takeProfit, profitDiff, sr, ticker} = info
+
+        if (position === "n/a" || loss <= 0 || entry <= 0 || stopLoss <= 0 || lossDiff <= 0 ||
+                leverage <=0 || takeProfit <= 0 || profitDiff <=0 || sr <= 0 || ticker === "" ) {
+            alert("input all information")
+            return
+        }
+
+        let posi = 0
+
+        if (position === "long") {
+                posi = 1
+        } else {
+                posi = 0
+        }
+
+        const tableSaved = {
+                posi,
+                loss,
+                entry,
+                stopLoss,
+                takeProfit,
+                ticker
+        }
+
+        dispatch(saveTradeInfo(tableSaved))
     }
 
     return (

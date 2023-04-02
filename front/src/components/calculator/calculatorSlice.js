@@ -1,20 +1,35 @@
 import { createSlice, current, createAsyncThunk } from "@reduxjs/toolkit"
 import axios from "axios"
-import { request } from "../../util/axios"
+// import { request } from "../../util/axios"
+
+const testSet = {
+    loss : 3, 
+    position : "long", 
+    entry : 100.5, 
+    stopLoss : 98, 
+    lossDiff : 2,
+    leverage : 1.5,
+    takeProfit : 110,
+    profitDiff : 10,
+    sr : 5 ,
+    ticker : "btcusdt",
+}
+
+const defaultSet = {
+    loss : 0, 
+    position : "n/a", 
+    entry : 0, 
+    stopLoss : 0, 
+    lossDiff : 0,
+    leverage : 0,
+    takeProfit : 0,
+    profitDiff : 0,
+    sr : 0 ,
+    ticker : "",
+}
 
 const initialState = {
-    value : {
-        loss : 0, 
-        position : "n/a", 
-        entry : 0, 
-        stopLoss : 0, 
-        lossDiff : 0,
-        leverage : 0,
-        takeProfit : 0,
-        profitDiff : 0,
-        sr : 0 ,
-        ticker : "",
-    },
+    value : testSet,
     status : null
 }
 
@@ -70,14 +85,11 @@ export const calculatorSlice = createSlice({
 })
 
 export const saveTradeInfo = createAsyncThunk(
-        "POST/SAVETRADING", async (tradingInfo) => {
-            console.log(tradingInfo)
-            const response = await axios.post(`${process.env.REACT_APP_BACKEND_SERVER}/as`,
-                tradingInfo
-                
+        "POST/SAVETRADING", async (tableSaved) => {
+            const response = await axios.post(`${process.env.REACT_APP_BACKEND_SERVER}/saveTradingData`,
+                tableSaved
             )
-
-            console.log(response.data)
+            alert(response.data.msg)
         }
 )
 

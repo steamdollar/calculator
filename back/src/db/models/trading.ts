@@ -23,6 +23,11 @@ export function initializeTrading(sequelize : Sequelize) {
         },
         date: {
             type: DataTypes.DATE,
+            allowNull : false
+        },
+        position : {
+            type : DataTypes.BOOLEAN,
+            allowNull : false
         },
         wallet: {
             type: DataTypes.CHAR(42),
@@ -31,11 +36,26 @@ export function initializeTrading(sequelize : Sequelize) {
                 key: 'addr',
             },
         },
-        tolerance: DataTypes.FLOAT,
-        entry: DataTypes.FLOAT,
-        sl: DataTypes.FLOAT,
-        tp: DataTypes.FLOAT,
-        ticker: DataTypes.STRING(32),
+        tolerance: {
+            type : DataTypes.FLOAT,
+            allowNull : false
+        },
+        entry: {
+            type : DataTypes.FLOAT,
+            allowNull : false
+        },
+        sl: {
+            type : DataTypes.FLOAT,
+            allowNull : false
+        },
+        tp: {
+            type : DataTypes.FLOAT,
+            allowNull : false
+        },
+        ticker: {
+            type : DataTypes.STRING(32),
+            allowNull : false
+        },
         result: DataTypes.BOOLEAN,
         memo: DataTypes.TEXT,
     }, {
