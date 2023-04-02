@@ -5,13 +5,13 @@ export const calculateLossDiff = (position, loss, entry, stoploss) => {
     }
     let stopDiff = ""
     if(position === "long") {
-        stopDiff = ((entry - stoploss)/entry) * 100
+        stopDiff = (((entry - stoploss)/entry) * 100)
     } else {
-        stopDiff = ((stoploss-entry)/entry) * 100
+        stopDiff = (((stoploss-entry)/entry) * 100)
     } 
     
     const leverage = (loss/stopDiff).toFixed(2)
-    return [stopDiff, leverage]
+    return [stopDiff.toFixed(2), leverage]
 }
 
 export const calculateProfitDiff = (position, entry, tp, lossDiff) => {
