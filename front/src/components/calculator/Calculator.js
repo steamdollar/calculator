@@ -84,6 +84,7 @@ export function Calculator() {
     }
     
     const saveInfo = async (info) => {
+
         const { position, loss, entry, stopLoss, lossDiff, leverage, takeProfit, profitDiff, sr, ticker} = info
 
         if (position === "n/a" || loss <= 0 || entry <= 0 || stopLoss <= 0 || lossDiff <= 0 ||
@@ -95,20 +96,21 @@ export function Calculator() {
         let posi = 0
 
         if (position === "long") {
-                posi = 1
+                posi = true
         } else {
-                posi = 0
+                posi = false
         }
 
         const tableSaved = {
-                posi,
-                loss,
-                entry,
-                stopLoss,
-                takeProfit,
-                ticker
+            position : posi,
+            tolerance : loss,
+            entry,
+            sl : stopLoss,
+            tp : takeProfit,
+            ticker
         }
 
+        console.log(tableSaved)
         dispatch(saveTradeInfo(tableSaved))
     }
 
