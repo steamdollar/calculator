@@ -2,6 +2,8 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+
+// db data
 import { SequelizeModule } from '@nestjs/sequelize';
 import { Sequelize } from 'sequelize-typescript';
 import { Wallet } from './models/wallet.model';

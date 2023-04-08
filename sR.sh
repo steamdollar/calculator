@@ -24,7 +24,7 @@ echo "ports initialized.."
 
 echo "server run.."
 
-cd back2
+cd back
 npm run start &
 
 cd ..
