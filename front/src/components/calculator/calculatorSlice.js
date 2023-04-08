@@ -86,7 +86,7 @@ export const calculatorSlice = createSlice({
 
 export const saveTradeInfo = createAsyncThunk(
         "POST/SAVETRADING", async (tableSaved) => {
-            const response = await axios.post(`${process.env.REACT_APP_BACKEND_SERVER}/saveTradingData`,
+            const response = await axios.post(`${process.env.REACT_APP_BACKEND_SERVER}/trading/saveTradingData`,
                 tableSaved
             )
             alert(response.data.msg)
