@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { selectPosition, inputLoss, selectEntry, selectSl, showLossDiff, showLeverage, selectTP, showProfitDiff, showSR, selectTicker, saveTradeInfo } from "./calculatorSlice";
 import styled from "styled-components"
-import { calculateLossDiff, calculateProfitDiff } from "./formula";
+import { calculateLossDiff, calculateProfitDiff } from "../../util/formula";
 import { isProperPrice } from "../../util/checkValue";
 
 const CalculateModule = styled.div`
