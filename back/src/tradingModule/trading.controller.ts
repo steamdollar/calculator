@@ -1,14 +1,16 @@
-import { Controller, Get, Post, Body } from '@nestjs/common';
-import { responseObj } from 'src/@types/response';
-import { TradingService } from './trading.service';
-import { receivedDataForSave } from './tradingType';
+import { Controller, Get, Post, Body } from "@nestjs/common";
+import { responseObj } from "src/@types/response";
+import { TradingService } from "./trading.service";
+import { receivedDataForSave } from "./tradingType";
 
-@Controller('trading')
+@Controller("trading")
 export class TradingController {
-    constructor(private readonly tradingService : TradingService) {}
+        constructor(private readonly tradingService: TradingService) {}
 
-  @Post('/saveTradingData')
-  async saveTradingData(@Body() tradingData : receivedDataForSave): Promise<responseObj> {
-    return await this.tradingService.saveTradingData(tradingData);
-  }
+        @Post("/saveTradingData")
+        async saveTradingData(
+                @Body() tradingData: receivedDataForSave
+        ): Promise<responseObj> {
+                return await this.tradingService.saveTradingData(tradingData);
+        }
 }
