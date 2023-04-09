@@ -25,7 +25,7 @@ echo "ports initialized.."
 echo "server run.."
 
 cd back
-npm run start:dev &
+npm run start &
 
 cd ..
 

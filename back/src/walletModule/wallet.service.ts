@@ -1,22 +1,20 @@
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
 import { Sequelize } from "sequelize-typescript";
-import { Trading } from "../models/trading.model";
+import { Wallet } from "../models/wallet.model";
 import { makeResponseObj, responseObj } from "../@types/response";
-import { receivedDataForSave } from "./tradingType";
+import { walletDTO } from "./walletType";
 
 @Injectable()
-export class TradingService {
+export class WalletService {
         constructor(
-                @InjectModel(Trading) private tradingModel: typeof Trading,
+                @InjectModel(Wallet) private walletModel: typeof Wallet,
                 private sequelize: Sequelize
         ) {}
 
-        async saveTradingData(
-                tradingData: receivedDataForSave
-        ): Promise<responseObj> {
+        async saveWalletData(walletDTO: walletDTO): Promise<responseObj> {
                 let response: responseObj;
-                const dataSaved = { ...tradingData, date: new Date() };
+                const dataSaved = { ...walletDTO };
 
                 const createTradingData = async () => {
                         try {
@@ -25,7 +23,7 @@ export class TradingService {
                                                 transaction: t,
                                         };
 
-                                        await this.tradingModel.create(
+                                        await this.walletModel.create(
                                                 dataSaved,
                                                 transactionHost
                                         );
@@ -33,7 +31,7 @@ export class TradingService {
                         } catch (e) {
                                 console.log(e.message);
                                 throw new Error(
-                                        "err : failed to save trading record"
+                                        "err : failed to save wallet record"
                                 );
                         }
                 };
@@ -45,11 +43,7 @@ export class TradingService {
                                 "data successfully saved"
                         );
                 } catch (e) {
-                        console.log(e.message);
-                        response = makeResponseObj(
-                                1,
-                                "err : failed to save trading record"
-                        );
+                        response = makeResponseObj(1, e.message);
                 } finally {
                         return response;
                 }
