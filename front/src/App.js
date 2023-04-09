@@ -1,13 +1,21 @@
-import { Calculator } from "./components/calculator/Calculator";
-import { TradingRecord } from "./components/tradingRecord/TradingRecord";
+import { Route, Routes } from "react-router-dom";
+import { Header } from "./components/header/Header";
+import { TradingModule } from "./components/tradingModule/index";
 
 function App() {
-  return (
-    <div className="App">
-      <Calculator/>
-      <TradingRecord/>
-    </div>
-  );
+        return (
+                <div className="App">
+                        <Header />
+
+                        <Routes>
+                                <Route path="/">훠어어</Route>
+                                <Route
+                                        path="/trading"
+                                        element={<TradingModule />}
+                                ></Route>
+                        </Routes>
+                </div>
+        );
 }
 
 export default App;
