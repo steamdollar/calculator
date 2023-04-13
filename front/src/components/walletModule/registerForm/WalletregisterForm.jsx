@@ -73,9 +73,12 @@ export const WalletRegisterForm = () => {
         };
 
         const saveInfo = async (walletDTO) => {
-                console.log(walletDTO);
                 dispatch(saveWalletInfo(walletDTO));
         };
+
+        // useEffect(() => {
+        //         dispatch
+        // })
 
         return (
                 <Wrapper>
