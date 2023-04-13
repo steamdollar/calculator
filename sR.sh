@@ -20,6 +20,8 @@ do
     fi
 done
 
+sleep 3
+
 echo "ports initialized.."
 
 echo "server run.."
