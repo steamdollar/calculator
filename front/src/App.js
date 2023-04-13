@@ -1,6 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import { Header } from "./components/header/Header";
 import { TradingModule } from "./components/tradingModule/index";
+import { WalletModule } from "./components/walletModule";
 
 function App() {
         return (
@@ -8,7 +9,10 @@ function App() {
                         <Header />
 
                         <Routes>
-                                <Route path="/">훠어어</Route>
+                                <Route
+                                        path="/"
+                                        element={<WalletModule />}
+                                ></Route>
                                 <Route
                                         path="/trading"
                                         element={<TradingModule />}
