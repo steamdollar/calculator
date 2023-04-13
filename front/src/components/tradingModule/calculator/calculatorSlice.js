@@ -39,7 +39,6 @@ export const calculatorSlice = createSlice({
         reducers: {
                 inputLoss: (state, action) => {
                         state.value.loss = action.payload;
-                        console.log(action.payload);
                         // console.log(current(state))
                 },
                 selectPosition: (state, action) => {
