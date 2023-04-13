@@ -51,31 +51,16 @@ export function Calculator() {
         const dispatch = useDispatch();
         const fullValue = useSelector((state) => state.calculator.value);
 
-        // TODO : 이거 꼭 이렇게 해야하나? 다 일일히 써줘야 함?
-        // 위에 쓴 fullValue만 써서 할 수는 없나?
-        // 그럼 아래 함수들의 파라미터가 더러워질 것 같긴 한데..
-        const position = useSelector(
-                (state) => state.calculator.value.position
-        );
-        const loss = useSelector((state) => state.calculator.value.loss);
-        const entry = useSelector((state) => state.calculator.value.entry);
-        const stopLoss = useSelector(
-                (state) => state.calculator.value.stopLoss
-        );
-        const lossDiff = useSelector(
-                (state) => state.calculator.value.lossDiff
-        );
-        const leverage = useSelector(
-                (state) => state.calculator.value.leverage
-        );
-        const takeProfit = useSelector(
-                (state) => state.calculator.value.takeProfit
-        );
-        const profitDiff = useSelector(
-                (state) => state.calculator.value.profitDiff
-        );
-        const sr = useSelector((state) => state.calculator.value.sr);
-        const ticker = useSelector((state) => state.calculator.value.ticker);
+        const position = fullValue.position;
+        const loss = fullValue.loss;
+        const entry = fullValue.entry;
+        const stopLoss = fullValue.stopLoss;
+        const lossDiff = fullValue.lossDiff;
+        const leverage = fullValue.leverage;
+        const takeProfit = fullValue.takeProfit;
+        const profitDiff = fullValue.profitDiff;
+        const sr = fullValue.sr;
+        const ticker = fullValue.ticker;
 
         useEffect(() => {
                 dispatch(

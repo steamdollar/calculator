@@ -7,6 +7,11 @@ import { walletDTO } from "./walletType";
 export class WalletController {
         constructor(private readonly walletService: WalletService) {}
 
+        @Get("getMyWalletInfo")
+        async getMyWalletInfo(): Promise<walletDTO[] | responseObj> {
+                return await this.walletService.getMyWalletInfo();
+        }
+
         @Post("/saveWallet")
         async saveTradingData(
                 @Body() walletData: walletDTO
