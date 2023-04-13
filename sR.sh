@@ -24,10 +24,20 @@ echo "ports initialized.."
 
 echo "server run.."
 
-cd back
-npm run start &
+if [ $1 == "ba" ]
+then 
+    cd back
+    npm run start
+elif [ $1 == "fr" ]
+then
+    cd front
+    npm start
+else
+    cd back
+    npm run start &
 
-cd ..
+    cd ..
 
-cd front
-npm start
+    cd front
+    npm start
+fi

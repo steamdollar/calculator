@@ -48,4 +48,44 @@ export class WalletService {
                         return response;
                 }
         }
+
+        async getMyWalletInfo(): Promise<walletDTO[] | responseObj> {
+                let response: walletDTO[] | responseObj;
+                // TODO : 이 db랑 상호작용하는 함수들 다 여기 지저분 하게 놔둬야 하나?
+                // 다른데로 빼두면 외않됌?
+                const retreiveWalletData = async () => {
+                        try {
+                                const walletData =
+                                        await this.sequelize.transaction(
+                                                async (t) => {
+                                                        const transactionHost =
+                                                                {
+                                                                        transaction:
+                                                                                t,
+                                                                };
+
+                                                        return await this.walletModel.findAll(
+                                                                {
+                                                                        ...transactionHost,
+                                                                }
+                                                        );
+                                                }
+                                        );
+                                return walletData;
+                        } catch (e) {
+                                console.log(e.message);
+                                throw new Error(
+                                        "err : failed to get wallet data"
+                                );
+                        }
+                };
+
+                try {
+                        response = await retreiveWalletData();
+                } catch (e) {
+                        response = makeResponseObj(1, e.message);
+                } finally {
+                        return response;
+                }
+        }
 }
