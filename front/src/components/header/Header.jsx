@@ -19,6 +19,9 @@ export function Header() {
                         <span>
                                 <Link to="/trading">Trading</Link>
                         </span>
+                        <span>
+                                <Link to="/wallet/:walletId">Wallet</Link>
+                        </span>
                 </Navigator>
         );
 }
