@@ -13,8 +13,19 @@ async function bootstrap() {
 
         await sequelize.sync({ force: false });
 
+        const allowedOrigin = [
+                configService.get("FRONTEND_ADDRESS"),
+                configService.get("FRONTEND_ADDRESS2"),
+        ];
+
         app.enableCors({
-                origin: configService.get<string>("FRONTEND_ADDRESS"),
+                origin: (origin, callback) => {
+                        if (!origin || allowedOrigin.includes(origin)) {
+                                callback(null, true);
+                        } else {
+                                callback(new Error("not allowed by cors"));
+                        }
+                },
                 methods: "GET, POST, PUT, DELETE, HEAD",
         });
 
@@ -25,4 +36,5 @@ async function bootstrap() {
                 )}`
         );
 }
+
 bootstrap();
