@@ -76,10 +76,6 @@ export const WalletRegisterForm = () => {
                 dispatch(saveWalletInfo(walletDTO));
         };
 
-        // useEffect(() => {
-        //         dispatch
-        // })
-
         return (
                 <Wrapper>
                         <SectionName> Wallet Register </SectionName>
