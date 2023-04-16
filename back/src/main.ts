@@ -11,7 +11,7 @@ async function bootstrap() {
         const configService = app.get(ConfigService);
         const sequelize = app.get<Sequelize>(Sequelize);
 
-        await sequelize.sync({ force: false });
+        await sequelize.sync({ force: true });
 
         const allowedOrigin = [
                 configService.get("FRONTEND_ADDRESS"),

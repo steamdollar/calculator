@@ -11,7 +11,6 @@ export const walletListSlice = createSlice({
                 state.addCase(getWalletInfo.fulfilled, (state, action) => {
                         state.status = "success";
                         state.data = action.payload;
-                        console.log(current(state));
                 })
                         .addCase(getWalletInfo.pending, (state, action) => {
                                 state.status = "loading";

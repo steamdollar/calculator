@@ -12,7 +12,7 @@ export class Wallet extends Model {
         address: string;
 
         @Column(DataType.STRING(32))
-        affiliation: string;
+        walletName: string;
 
         @Column(DataType.STRING(32))
         purpose: string;
