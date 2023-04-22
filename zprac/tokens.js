@@ -7,6 +7,7 @@ const provider = new ethers.InfuraProvider(
         process.env.INFURA_API_KEY
 );
 
+console.log(provider);
 const decimals = 18;
 
 // abi를 전부 가져오지말고 꼭 필요한 정보만을 가져다 넣는다.

@@ -22,9 +22,6 @@ export class Web3Provider {
 
                                 const key = `${service}-${network}`;
 
-                                console.log(url);
-                                console.log(apiKey);
-
                                 if (service === "alchemy") {
                                         this.providers.set(
                                                 key,

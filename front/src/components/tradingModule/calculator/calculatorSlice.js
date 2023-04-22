@@ -1,6 +1,5 @@
 import { createSlice, current, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-// import { request } from "../../util/axios"
 
 const testSet = {
         loss: 3,
@@ -15,18 +14,18 @@ const testSet = {
         ticker: "btcusdt",
 };
 
-const defaultSet = {
-        loss: 0,
-        position: "n/a",
-        entry: 0,
-        stopLoss: 0,
-        lossDiff: 0,
-        leverage: 0,
-        takeProfit: 0,
-        profitDiff: 0,
-        sr: 0,
-        ticker: "",
-};
+// const defaultSet = {
+//         loss: 0,
+//         position: "n/a",
+//         entry: 0,
+//         stopLoss: 0,
+//         lossDiff: 0,
+//         leverage: 0,
+//         takeProfit: 0,
+//         profitDiff: 0,
+//         sr: 0,
+//         ticker: "",
+// };
 
 const initialState = {
         value: testSet,
@@ -39,7 +38,7 @@ export const calculatorSlice = createSlice({
         reducers: {
                 inputLoss: (state, action) => {
                         state.value.loss = action.payload;
-                        // console.log(current(state))
+                        console.log(current(state));
                 },
                 selectPosition: (state, action) => {
                         state.value.position = action.payload;
