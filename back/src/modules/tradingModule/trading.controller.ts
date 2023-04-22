@@ -1,5 +1,5 @@
 import { Controller, Get, Post, Body } from "@nestjs/common";
-import { responseObj } from "src/@types/response";
+import { responseObj } from "../../@types/response";
 import { TradingService } from "./trading.service";
 import { receivedDataForSave } from "./tradingType";
 

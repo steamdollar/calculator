@@ -1,5 +1,5 @@
 export interface walletDTO {
         address: string;
-        affiliation: string;
+        name: string;
         purpose: string;
 }

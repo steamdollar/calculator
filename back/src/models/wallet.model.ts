@@ -1,7 +1,6 @@
 import { Column, DataType, Model, Table, HasMany } from "sequelize-typescript";
 import { Trading } from "./trading.model";
 import { AirDrop } from "./airdrop.model";
-import { Balance } from "./balance.model";
 
 @Table({ tableName: "wallet", timestamps: false })
 export class Wallet extends Model {
@@ -12,7 +11,7 @@ export class Wallet extends Model {
         address: string;
 
         @Column(DataType.STRING(32))
-        affiliation: string;
+        name: string;
 
         @Column(DataType.STRING(32))
         purpose: string;
@@ -22,7 +21,4 @@ export class Wallet extends Model {
 
         @HasMany(() => AirDrop, { foreignKey: "wallet", as: "walletAirdrop" })
         airdrops: AirDrop[];
-
-        @HasMany(() => Balance, { foreignKey: "wallet", as: "walletBalance" })
-        balances: Balance[];
 }

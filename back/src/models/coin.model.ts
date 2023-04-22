@@ -1,19 +1,24 @@
 // coin.model.ts
-import { Table, Column, Model, ForeignKey, BelongsTo } from 'sequelize-typescript';
-import { Balance } from './balance.model';
+import {
+        Table,
+        Column,
+        Model,
+        ForeignKey,
+        BelongsTo,
+        DataType,
+} from "sequelize-typescript";
 
-@Table({ tableName: 'coin', timestamps: false })
+@Table({ tableName: "coin", timestamps: false })
 export class Coin extends Model<Coin> {
-  @Column({ primaryKey: true })
-  name!: string;
+        @Column(DataType.STRING(16))
+        token!: string;
 
-  @Column
-  listed_market!: string;
+        @Column(DataType.STRING(10))
+        symbol: string;
 
-  @ForeignKey(() => Balance)
-  @Column
-  balanceCoinName!: string;
+        @Column(DataType.STRING(16))
+        chain: string;
 
-  @BelongsTo(() => Balance, { foreignKey: 'balanceCoinName', as: 'coinName' })
-  balance!: Balance;
+        @Column(DataType.STRING(42))
+        ca: string;
 }

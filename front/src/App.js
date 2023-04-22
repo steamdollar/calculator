@@ -2,6 +2,7 @@ import { Route, Routes } from "react-router-dom";
 import { Header } from "./components/header/Header";
 import { TradingModule } from "./components/tradingModule/index";
 import { WalletModule } from "./components/walletModule";
+import { WalletInfo } from "./components/walletModule/walletInfo/walletInfo";
 
 function App() {
         return (
@@ -16,6 +17,10 @@ function App() {
                                 <Route
                                         path="/trading"
                                         element={<TradingModule />}
+                                ></Route>
+                                <Route
+                                        path="/wallet/:walletId"
+                                        element={<WalletInfo />}
                                 ></Route>
                         </Routes>
                 </div>

@@ -3,7 +3,7 @@ import axios from "axios";
 
 const testSet = {
         address: "0xcA257Dc2E925c67D396725A48FfB8A913f3e3CE8",
-        affiliation: "shield",
+        name: "shield",
         purpose: "airdrop",
 };
 
@@ -17,7 +17,6 @@ export const walletRegisterSlice = createSlice({
         reducers: {
                 inputAddress: (state, action) => {
                         state.address = action.payload;
-                        console.log(action.payload);
                 },
                 inputAffiliation: (state, action) => {
                         state.affiliation = action.payload;
@@ -29,8 +28,11 @@ export const walletRegisterSlice = createSlice({
         extraReducers: (state) => {
                 state.addCase(saveWalletInfo.fulfilled, (state, action) => {
                         state.status = null;
+                        state.address = "";
+                        state.purpose = "";
+                        state.name = "";
                 })
-                        .addCase(saveWalletInfo.pending, (state, action) => {
+                        .addCase(saveWalletInfo.pending, (state) => {
                                 state.status = "loading";
                         })
                         .addCase(saveWalletInfo.rejected, (state, action) => {
@@ -46,7 +48,14 @@ export const saveWalletInfo = createAsyncThunk(
                         `${process.env.REACT_APP_BACKEND_SERVER}/wallet/saveWallet`,
                         wallet
                 );
-                alert(response.data.msg);
+
+                if (response.data.status === 1) {
+                        const err = new Error(response.data.msg);
+                        alert(err);
+                        throw err;
+                } else {
+                        alert(response.data.msg);
+                }
         }
 );
 
