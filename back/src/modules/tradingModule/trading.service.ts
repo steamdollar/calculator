@@ -1,8 +1,8 @@
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
 import { Sequelize } from "sequelize-typescript";
-import { Trading } from "src/models/trading.model";
-import { makeResponseObj, responseObj } from "../@types/response";
+import { Trading } from "../../models/trading.model";
+import { makeResponseObj, responseObj } from "../../@types/response";
 import { receivedDataForSave } from "./tradingType";
 
 @Injectable()

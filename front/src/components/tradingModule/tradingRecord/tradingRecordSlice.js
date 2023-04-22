@@ -23,7 +23,11 @@ const initialState = {
 export const tradingRecordSlice = createSlice({
         name: "tradingRecord",
         initialState,
-        reducers: {},
+        reducers: {
+                inputLoss: (state, action) => {
+                        state.defaultSet.loss = action.payload;
+                },
+        },
         extraReducers: (state) => {
                 state.addCase(getTradeRecord.fulfilled, (state, action) => {
                         state.status = null;
@@ -47,5 +51,7 @@ export const getTradeRecord = createAsyncThunk(
                 alert(response.data);
         }
 );
+
+export const { inputLoss } = tradingRecordSlice.actions;
 
 export default tradingRecordSlice.reducer;
