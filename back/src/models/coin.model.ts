@@ -7,13 +7,11 @@ import {
         BelongsTo,
         DataType,
 } from "sequelize-typescript";
-import { Balance } from "./balance.model";
 
 @Table({ tableName: "coin", timestamps: false })
 export class Coin extends Model<Coin> {
-        @ForeignKey(() => Balance)
         @Column(DataType.STRING(16))
-        token!: Balance;
+        token!: string;
 
         @Column(DataType.STRING(10))
         symbol: string;
@@ -23,7 +21,4 @@ export class Coin extends Model<Coin> {
 
         @Column(DataType.STRING(42))
         ca: string;
-
-        @BelongsTo(() => Balance, { foreignKey: "token", as: "tokenName" })
-        tokenName: Balance;
 }

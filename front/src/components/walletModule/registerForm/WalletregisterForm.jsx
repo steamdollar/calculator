@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
 import {
@@ -90,11 +90,11 @@ export const WalletRegisterForm = () => {
                                 </div>
                                 <div>
                                         <span style={{ fontSize: "19px" }}>
-                                                affiliation
+                                                name
                                         </span>
                                         <input
                                                 placeholder="input affiliation"
-                                                value={walletDTO.affiliation}
+                                                value={walletDTO.name}
                                                 onChange={handleAffiliation}
                                         />
                                 </div>

@@ -11,7 +11,29 @@ async function bootstrap() {
         const configService = app.get(ConfigService);
         const sequelize = app.get<Sequelize>(Sequelize);
 
-        await sequelize.sync({ force: true });
+        await sequelize.sync({ force: false });
+
+        // add test data to db
+        // (async () => {
+        //         await Wallet.create({
+        //                 address: configService.get("shield1"),
+        //                 name: "shield1",
+        //                 purpose: "airdrop",
+        //         });
+        //         await Wallet.create({
+        //                 address: configService.get("ledger1"),
+        //                 name: "ledger1",
+        //                 purpose: "airdrop, saving",
+        //         });
+
+        //         for (let i = 0; i < initTradingRecord.length; i++) {
+        //                 await Trading.create(initTradingRecord[i]);
+        //         }
+
+        //         for (let i = 0; i < initTokenList.length; i++) {
+        //                 await Coin.create(initTokenList[i]);
+        //         }
+        // })();
 
         const allowedOrigin = [
                 configService.get("FRONTEND_ADDRESS"),
