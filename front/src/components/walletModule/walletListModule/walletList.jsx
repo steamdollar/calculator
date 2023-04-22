@@ -10,8 +10,8 @@ const WalletTableWrap = styled.div`
 
 const WalletTable = styled.div`
         border: 1px solid black;
-        display: flex;
-        justify-content: space-evenly;
+        display: flex !important;
+        justify-content: space-evenly !important;
         padding: 3%;
 `;
 
@@ -42,7 +42,7 @@ export const WalletList = () => {
                                 >
                                         {v.address}
                                 </span>
-                                <span>{v.affiliation}</span>
+                                <span>{v.name}</span>
                                 <span>{v.purpose}</span>
                         </WalletTable>
                 );

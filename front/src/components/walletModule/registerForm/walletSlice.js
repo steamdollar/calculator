@@ -3,7 +3,7 @@ import axios from "axios";
 
 const testSet = {
         address: "0xcA257Dc2E925c67D396725A48FfB8A913f3e3CE8",
-        affiliation: "shield",
+        name: "shield",
         purpose: "airdrop",
 };
 
@@ -30,7 +30,7 @@ export const walletRegisterSlice = createSlice({
                         state.status = null;
                         state.address = "";
                         state.purpose = "";
-                        state.affiliation = "";
+                        state.name = "";
                 })
                         .addCase(saveWalletInfo.pending, (state) => {
                                 state.status = "loading";

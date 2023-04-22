@@ -11,22 +11,19 @@ import {
 import { Wallet } from "./wallet.model";
 import { Coin } from "./coin.model";
 
-@Table({ tableName: "balance", timestamps: false })
-export class Balance extends Model {
-        @PrimaryKey
-        @Column(DataType.STRING(20))
-        id: string;
+// @Table({ tableName: "balance", timestamps: false })
+// export class Balance extends Model {
+//         @PrimaryKey
+//         @Column(DataType.STRING(20))
+//         id: string;
 
-        @Column(DataType.STRING(42))
-        wallet: string;
+//         @Column(DataType.STRING(42))
+//         wallet: string;
 
-        @ForeignKey(() => Coin)
-        @Column(DataType.STRING(20))
-        token: string;
+//         @ForeignKey(() => Coin)
+//         @Column(DataType.STRING(20))
+//         token: string;
 
-        @BelongsTo(() => Wallet, { foreignKey: "wallet", as: "walletBalance" })
-        walletBalance: Wallet;
-
-        @HasMany(() => Coin, { foreignKey: "token", as: "tokenName" })
-        tokenName: Coin[];
-}
+//         @BelongsTo(() => Wallet, { foreignKey: "wallet", as: "walletBalance" })
+//         walletBalance: Wallet;
+// }

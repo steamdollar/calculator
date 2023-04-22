@@ -1,5 +1,5 @@
 import { Controller, Get, Post, Body } from "@nestjs/common";
-import { responseObj } from "../@types/response";
+import { responseObj } from "../../@types/response";
 import { WalletService } from "./wallet.service";
 import { walletDTO } from "./walletType";
 
@@ -13,7 +13,7 @@ export class WalletController {
         }
 
         @Post("/saveWallet")
-        async saveTradingData(
+        async saveWalletData(
                 @Body() walletData: walletDTO
         ): Promise<responseObj> {
                 return await this.walletService.saveWalletData(walletData);
