@@ -2,32 +2,51 @@ import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
 import { Coin } from "../../models/coin.model";
 import { makeResponseObj, responseObj } from "../../@types/response";
-import { ConfigService } from "@nestjs/config";
 import { minErc20Abi } from "../../utils/abi";
+import { Web3Provider } from "../web3Module/web3.provider";
+import { ethers } from "ethers";
+import {
+        balanceResponse,
+        getTokenBalance,
+        makeBalanceResponse,
+        makeTokenList,
+        selectService,
+} from "./balance.utils";
 
 @Injectable()
 export class BalanceService {
         constructor(
                 @InjectModel(Coin) private coinModel: typeof Coin,
-                private readonly configService: ConfigService
+                private readonly web3Provider: Web3Provider
         ) {}
 
-        async getBalance(address: string, chain: string): Promise<any> {
+        async getBalance(
+                address: string,
+                chain: string
+        ): Promise<responseObj | balanceResponse> {
                 try {
-                        let tokenToReq = [];
                         const tokenList = await this.coinModel.findAll({
                                 where: {
                                         chain: chain,
                                 },
                         });
 
-                        for (let i = 0; i < tokenList.length; i++) {
-                                tokenToReq.push(tokenList[i].dataValues.ca);
-                        }
+                        const tokensToReq = makeTokenList(tokenList);
 
-                        // for (const token of tokenToReq) {
+                        let service = selectService(chain);
 
-                        // }
+                        const provider = this.web3Provider.getProvider(
+                                service,
+                                chain
+                        );
+
+                        const balances = await getTokenBalance(
+                                address,
+                                tokensToReq,
+                                provider
+                        );
+
+                        return makeBalanceResponse(balances);
                 } catch (e) {
                         console.log(e.message);
                         return makeResponseObj(1, e.message);

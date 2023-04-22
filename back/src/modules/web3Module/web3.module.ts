@@ -18,10 +18,22 @@ import { Web3Provider } from "./web3.provider";
                                                                 "ALCHEMY_ETHERUM_MAINNET_KEY"
                                                         ),
                                                 },
-                                                polygon: {
+                                                matic: {
                                                         url: "matic",
                                                         apiKey: configService.get(
                                                                 "ALCHEMY_POLYGON_MAINNET_KEY"
+                                                        ),
+                                                },
+                                                arbitrum: {
+                                                        url: "arbitrum",
+                                                        apiKey: configService.get(
+                                                                "ALCHEMY_ARBITRUM_MAINNET_KEY"
+                                                        ),
+                                                },
+                                                optimism: {
+                                                        url: "optimism",
+                                                        apiKey: configService.get(
+                                                                "ALCHEMY_OPTIMISM_MAINNET_KEY"
                                                         ),
                                                 },
                                                 goerli: {
@@ -38,6 +50,12 @@ import { Web3Provider } from "./web3.provider";
                                                                 "INFURA_ETHEREUM_MAINNET_KEY"
                                                         ),
                                                 },
+                                                // avalanche: {
+                                                //         url: "avalanche",
+                                                //         apiKey: configService.get(
+                                                //                 "INFURA_AVALANCHE_MAINNET_KEY"
+                                                //         ),
+                                                // },
                                         },
                                 };
                         },
