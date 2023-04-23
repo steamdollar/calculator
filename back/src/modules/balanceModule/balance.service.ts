@@ -43,7 +43,8 @@ export class BalanceService {
                         const balances = await getTokenBalance(
                                 address,
                                 tokensToReq,
-                                provider
+                                provider,
+                                chain
                         );
 
                         return makeBalanceResponse(balances);

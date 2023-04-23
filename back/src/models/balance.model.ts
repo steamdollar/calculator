@@ -1,15 +1,15 @@
-import {
-        Table,
-        Column,
-        Model,
-        DataType,
-        ForeignKey,
-        BelongsTo,
-        HasMany,
-        PrimaryKey,
-} from "sequelize-typescript";
-import { Wallet } from "./wallet.model";
-import { Coin } from "./coin.model";
+// import {
+//         Table,
+//         Column,
+//         Model,
+//         DataType,
+//         ForeignKey,
+//         BelongsTo,
+//         HasMany,
+//         PrimaryKey,
+// } from "sequelize-typescript";
+// import { Wallet } from "./wallet.model";
+// import { Coin } from "./coin.model";
 
 // @Table({ tableName: "balance", timestamps: false })
 // export class Balance extends Model {
