@@ -24,6 +24,8 @@ export class BalanceService {
                 address: string,
                 chain: string
         ): Promise<responseObj | balanceResponse> {
+                console.log(address);
+                console.log(chain);
                 try {
                         const tokenList = await this.coinModel.findAll({
                                 where: {
