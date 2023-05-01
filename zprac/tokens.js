@@ -7,7 +7,6 @@ const provider = new ethers.InfuraProvider(
         process.env.INFURA_API_KEY
 );
 
-console.log(provider);
 const decimals = 18;
 
 // abi를 전부 가져오지말고 꼭 필요한 정보만을 가져다 넣는다.
@@ -60,6 +59,15 @@ const minimalErc20Abi = [
                 ],
                 type: "function",
         },
+        {
+                constant: true,
+                inputs: [],
+                name: "decimals",
+                outputs: [{ name: "", type: "uint8" }],
+                payable: false,
+                stateMutability: "view",
+                type: "function",
+        },
 ];
 
 // token 목록은 다음과 같이 db에서 가져왔다고 가정
@@ -95,13 +103,15 @@ const getWalletTokenBalances = async (walletAddress) => {
                 });
         }
 
+        console.log(balances);
+
         return balances;
 };
 
 (async () => {
         const walletAddress = "0x2BCD25D8D7bB17206d83cb359Fbacf16aBD2796C";
         const balances = await getWalletTokenBalances(walletAddress);
-        console.log(balances);
+        // console.log(balances);
 })();
 
 //

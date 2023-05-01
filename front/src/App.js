@@ -2,7 +2,7 @@ import { Route, Routes } from "react-router-dom";
 import { Header } from "./components/header/Header";
 import { TradingModule } from "./components/tradingModule/index";
 import { WalletModule } from "./components/walletModule";
-import { WalletInfo } from "./components/walletModule/walletInfo/walletInfo";
+import { BalanceInfo } from "./components/BalanceModule/balanceInfo";
 
 function App() {
         return (
@@ -20,7 +20,7 @@ function App() {
                                 ></Route>
                                 <Route
                                         path="/wallet/:walletId"
-                                        element={<WalletInfo />}
+                                        element={<BalanceInfo />}
                                 ></Route>
                         </Routes>
                 </div>

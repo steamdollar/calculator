@@ -9,9 +9,9 @@ import { Sequelize } from "sequelize-typescript";
 import { Wallet } from "./models/wallet.model";
 import { Trading } from "./models/trading.model";
 import { AirDrop } from "./models/airdrop.model";
-// import { Balance } from "./models/balance.model";
 import { Project } from "./models/project.model";
 import { Coin } from "./models/coin.model";
+import { Gecko } from "./models/gecko.model";
 
 // modules
 import { TradingModule } from "./modules/tradingModule/trading.module";
@@ -19,6 +19,7 @@ import { WalletModule } from "./modules/walletModule/wallet.module";
 import { CoinModule } from "./modules/coinModule/coin.module";
 import { BalanceModule } from "./modules/balanceModule/balance.module";
 import { Web3Module } from "./modules/web3Module/web3.module";
+import { InitService } from "./utils/init.service";
 
 @Module({
         imports: [
@@ -34,7 +35,7 @@ import { Web3Module } from "./modules/web3Module/web3.module";
                                 Wallet,
                                 Trading,
                                 AirDrop,
-                                // Balance,
+                                Gecko,
                                 Project,
                                 Coin,
                         ],
@@ -46,7 +47,7 @@ import { Web3Module } from "./modules/web3Module/web3.module";
                 // Web3Module,
         ],
         controllers: [AppController],
-        providers: [AppService],
+        providers: [AppService, InitService],
 })
 export class AppModule {
         constructor(private sequelize: Sequelize) {}
