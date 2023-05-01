@@ -12,6 +12,8 @@ import {
         makeTokenList,
         selectService,
 } from "./balance.utils";
+import { InitService } from "../../utils/init.service";
+import { Gecko } from "../../models/gecko.model";
 
 @Injectable()
 export class BalanceService {
@@ -22,10 +24,9 @@ export class BalanceService {
 
         async getBalance(
                 address: string,
-                chain: string
+                chain: string,
+                fiat?: string
         ): Promise<responseObj | balanceResponse> {
-                console.log(address);
-                console.log(chain);
                 try {
                         const tokenList = await this.coinModel.findAll({
                                 where: {

@@ -51,7 +51,7 @@ export const BalanceInfo = () => {
                                                                 )
                                                         }
                                                 >
-                                                        mainnet
+                                                        Ethereum
                                                 </span>
                                                 <span
                                                         onClick={(e) =>
@@ -61,10 +61,28 @@ export const BalanceInfo = () => {
                                                                 )
                                                         }
                                                 >
-                                                        optimism
+                                                        Optimism
                                                 </span>
-                                                <span>Arb</span>
-                                                <span>Matic</span>
+                                                <span
+                                                        onClick={(e) =>
+                                                                getBalance(
+                                                                        e.target
+                                                                                .innerHTML
+                                                                )
+                                                        }
+                                                >
+                                                        Arbitrum One
+                                                </span>
+                                                <span
+                                                        onClick={(e) =>
+                                                                getBalance(
+                                                                        e.target
+                                                                                .innerHTML
+                                                                )
+                                                        }
+                                                >
+                                                        Matic
+                                                </span>
                                         </div>
                                 </div>
                         )}

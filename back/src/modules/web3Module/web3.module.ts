@@ -12,25 +12,25 @@ import { Web3Provider } from "./web3.provider";
                         useFactory: (configService: ConfigService) => {
                                 return {
                                         alchemy: {
-                                                mainnet: {
+                                                Ethereum: {
                                                         url: "mainnet",
                                                         apiKey: configService.get(
                                                                 "ALCHEMY_ETHERUM_MAINNET_KEY"
                                                         ),
                                                 },
-                                                matic: {
+                                                Matic: {
                                                         url: "matic",
                                                         apiKey: configService.get(
                                                                 "ALCHEMY_POLYGON_MAINNET_KEY"
                                                         ),
                                                 },
-                                                arbitrum: {
+                                                "Arbitrum One": {
                                                         url: "arbitrum",
                                                         apiKey: configService.get(
                                                                 "ALCHEMY_ARBITRUM_MAINNET_KEY"
                                                         ),
                                                 },
-                                                optimism: {
+                                                Optimism: {
                                                         url: "optimism",
                                                         apiKey: configService.get(
                                                                 "ALCHEMY_OPTIMISM_MAINNET_KEY"

@@ -1,7 +1,7 @@
 export const initTokenList = [
         {
                 symbol: "STG",
-                chain: "mainnet",
+                chain: "Ethereum",
                 ca: "0xAf5191B0De278C7286d6C7CC6ab6BB8A73bA2Cd6",
         },
         {
@@ -11,7 +11,7 @@ export const initTokenList = [
         },
         {
                 symbol: "usdt",
-                chain: "mainnet",
+                chain: "Ethereum",
                 ca: "0xdac17f958d2ee523a2206206994597c13d831ec7",
         },
         {
@@ -21,12 +21,12 @@ export const initTokenList = [
         },
         {
                 symbol: "usdt",
-                chain: "optimism",
+                chain: "Optimism",
                 ca: "0x94b008aa00579c1307b0ef2c499ad98a8ce58e58",
         },
         {
                 symbol: "usdt",
-                chain: "arbitrum",
+                chain: "Arbitrum One",
                 ca: "0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9",
         },
         {
@@ -46,7 +46,7 @@ export const initTokenList = [
         },
         {
                 symbol: "usdc",
-                chain: "mainnet",
+                chain: "Ethereum",
                 ca: "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
         },
         {
@@ -56,12 +56,12 @@ export const initTokenList = [
         },
         {
                 symbol: "usdc",
-                chain: "arbitrum",
+                chain: "Arbitrum One",
                 ca: "0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8",
         },
         {
                 symbol: "usdc",
-                chain: "optimism",
+                chain: "Optimism",
                 ca: "0x7f5c764cbc14f9669b88837ca1490cca17c31607",
         },
         {
@@ -80,5 +80,24 @@ export const initTradingRecord = [
                 sl: 98,
                 tp: 100,
                 ticker: "btcusdt",
+        },
+];
+
+export const initGeckochainId = [
+        {
+                geckoChainId: "ethereum",
+                chain: "Ethereum",
+        },
+        {
+                geckoChainId: "optimistic-ethereum",
+                chain: "Optimism",
+        },
+        {
+                geckoChainId: "arbitrum-one",
+                chain: "Arbitrum One",
+        },
+        {
+                geckoChainId: "polygon-pos",
+                chain: "Matic",
         },
 ];

@@ -4,9 +4,14 @@ import { Sequelize } from "sequelize-typescript";
 import { AppModule } from "./app.module";
 import * as dotenv from "dotenv";
 import { Wallet } from "./models/wallet.model";
-import { initTokenList, initTradingRecord } from "./utils/dbRef";
+import {
+        initGeckochainId,
+        initTokenList,
+        initTradingRecord,
+} from "./utils/dbRef";
 import { Trading } from "./models/trading.model";
 import { Coin } from "./models/coin.model";
+import { Gecko } from "./models/gecko.model";
 
 dotenv.config();
 
@@ -40,6 +45,10 @@ async function bootstrap() {
 
                         for (let i = 0; i < initTokenList.length; i++) {
                                 await Coin.create(initTokenList[i]);
+                        }
+
+                        for (let i = 0; i < initGeckochainId.length; i++) {
+                                await Gecko.create(initGeckochainId[i]);
                         }
                 })();
         }
