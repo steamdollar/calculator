@@ -15,13 +15,6 @@ export class balanceResponse {
         balances: balance[];
 }
 
-export class geckoChaininfo {
-        id: string;
-        chain_identifier?: null | string;
-        name: string;
-        shortname?: string | null;
-}
-
 export const makeTokenList = (tokenList) => {
         let tokensToReq = [];
 
@@ -46,32 +39,57 @@ export const selectService = (chain) => {
         }
 };
 
-// 함수 존나 구림.. 리팩토링 필요..
 export const getTokenBalance = async (
         address: string,
         tokensToReq: string[],
         provider: AlchemyProvider | InfuraProvider,
         chain: string,
-        // geckoModel: typeof Gecko,
         fiat: string = "usd"
 ) => {
         let balances = [];
 
+        await getNativeTokenInfo(chain, address, provider, balances, fiat);
+
+        const chainId = await getGeckoChainId(chain);
+
+        await getTokenInfo(address, tokensToReq, provider, chainId, balances);
+
+        return balances;
+};
+
+const getNativeTokenInfo = async (
+        chain: string,
+        address: string,
+        provider: AlchemyProvider | InfuraProvider,
+        balances: any,
+        fiat: string = "usd"
+) => {
         const nativeTokenBalance = ethers.formatEther(
                 await provider.getBalance(address)
         );
 
-        const [nativeTokenName, nativeTokenSymbol, nativeTokenPrice] =
-                await getNativeTokenInfo(chain, fiat);
+        let ids = "ethereum";
+        let nativeTokenSymbol = "eth";
 
-        balances.push({
-                name: nativeTokenName,
-                symbol: nativeTokenSymbol,
-                price: nativeTokenPrice,
+        if (chain === "Matic") {
+                ids = "matic-network";
+                nativeTokenSymbol = "matic";
+        }
+        const response = await axios.get(
+                `https://api.coingecko.com/api/v3/simple/price?ids=${ids}&vs_currencies=${fiat}`
+        );
+
+        const nativeTokenbalance: balance = {
+                name: Object.keys(response.data)[0],
                 balance: nativeTokenBalance,
-        });
+                symbol: nativeTokenSymbol,
+                price: response.data[ids][fiat],
+        };
 
-        // chain의 value에서 chainId를 끌어내 그걸 axios 요청에 넣어야 함.
+        balances.push(nativeTokenbalance);
+};
+
+const getGeckoChainId = async (chain) => {
         const geckoChainId = await Gecko.findOne({
                 where: {
                         chain: chain,
@@ -79,8 +97,17 @@ export const getTokenBalance = async (
                 attributes: ["geckoChainId"],
         });
 
-        const chainId = geckoChainId.dataValues.geckoChainId;
+        return geckoChainId.dataValues.geckoChainId;
+};
 
+const getTokenInfo = async (
+        address: string,
+        tokensToReq: string[],
+        provider: AlchemyProvider | InfuraProvider,
+        chainId: string,
+        balances: any,
+        fiat: string = "usd"
+) => {
         for (const ca of tokensToReq) {
                 const contract = new ethers.Contract(ca, minErc20Abi, provider);
                 const url = `https://api.coingecko.com/api/v3/simple/token_price/${chainId}?contract_addresses=${ca}&vs_currencies=${fiat}`;
@@ -108,8 +135,6 @@ export const getTokenBalance = async (
                         });
                 }
         }
-
-        return balances;
 };
 
 export function makeBalanceResponse(balances: balance[]) {
@@ -118,24 +143,3 @@ export function makeBalanceResponse(balances: balance[]) {
                 balances,
         };
 }
-
-export const getNativeTokenInfo = async (
-        chain: string,
-        fiat: string = "usd"
-) => {
-        let ids = "ethereum";
-        let nativeTokenSymbol = "eth";
-
-        if (chain === "Matic") {
-                ids = "matic-network";
-                nativeTokenSymbol = "matic";
-        }
-        const response = await axios.get(
-                `https://api.coingecko.com/api/v3/simple/price?ids=${ids}&vs_currencies=${fiat}`
-        );
-
-        console.log(response.data);
-        const nativeTokenName = Object.keys(response.data)[0];
-
-        return [nativeTokenName, nativeTokenSymbol, response.data[ids][fiat]];
-};
