@@ -1,10 +1,12 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { React } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
+import { networkList } from "../../util/network";
 import { WalletList } from "../walletModule/walletListModule/walletList";
 import { setAddress, getBalanceInfo } from "./balanceSlice";
+import PieChart from "./Graph";
 
 const WalletPageWrap = styled.div`
         margin: 0 auto;
@@ -19,16 +21,57 @@ const ChooseWallet = styled.div`
 
 export const BalanceInfo = () => {
         const dispatch = useDispatch();
-        const balanceDTO = useSelector((state) => state.balanceGetter);
+        const balanceDTO = useSelector((state) => state.balanceGetter.balances);
         const { walletId } = useParams();
 
         useEffect(() => {
                 dispatch(setAddress(walletId));
-        }, []);
+        }, [dispatch]);
 
         const getBalance = (network) => {
                 dispatch(getBalanceInfo({ address: walletId, network }));
         };
+
+        const qwe = () => {
+                console.log(
+                        balanceDTO.filter((data) => data.network === "Ethereum")
+                );
+        };
+
+        const balanceCard = networkList.map((v, k) => {
+                return (
+                        <div key={k}>
+                                <span
+                                        onClick={(e) => {
+                                                getBalance(e.target.innerHTML);
+                                        }}
+                                >
+                                        {v}
+                                </span>
+                                <span>
+                                        {balanceDTO.findIndex(
+                                                (item) => item.network === v
+                                        ) === -1 ? (
+                                                <div> click to get Info</div>
+                                        ) : (
+                                                <>
+                                                        <PieChart
+                                                                balanceData={balanceDTO.filter(
+                                                                        (
+                                                                                dataset
+                                                                        ) =>
+                                                                                dataset.network ===
+                                                                                v
+                                                                )}
+                                                                key={k}
+                                                        />
+                                                        <span>asdad</span>
+                                                </>
+                                        )}
+                                </span>
+                        </div>
+                );
+        });
 
         return (
                 <WalletPageWrap>
@@ -42,47 +85,9 @@ export const BalanceInfo = () => {
                         ) : (
                                 <div>
                                         <span> wallet id : {walletId}</span>
+                                        <div>{balanceCard}</div>
                                         <div>
-                                                <span
-                                                        onClick={(e) =>
-                                                                getBalance(
-                                                                        e.target
-                                                                                .innerHTML
-                                                                )
-                                                        }
-                                                >
-                                                        Ethereum
-                                                </span>
-                                                <span
-                                                        onClick={(e) =>
-                                                                getBalance(
-                                                                        e.target
-                                                                                .innerHTML
-                                                                )
-                                                        }
-                                                >
-                                                        Optimism
-                                                </span>
-                                                <span
-                                                        onClick={(e) =>
-                                                                getBalance(
-                                                                        e.target
-                                                                                .innerHTML
-                                                                )
-                                                        }
-                                                >
-                                                        Arbitrum One
-                                                </span>
-                                                <span
-                                                        onClick={(e) =>
-                                                                getBalance(
-                                                                        e.target
-                                                                                .innerHTML
-                                                                )
-                                                        }
-                                                >
-                                                        Matic
-                                                </span>
+                                                <button onClick={qwe} />
                                         </div>
                                 </div>
                         )}
