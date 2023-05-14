@@ -1,3 +1,3 @@
 # calculator
 
-![image](https://user-images.githubusercontent.com/90621081/229275535-0406e482-3e47-4426-aeda-e232374760e1.png)
+![image](https://github.com/steamdollar/calculator/assets/90621081/0fba5578-b193-437c-be17-6dbc0ad2c27b)
