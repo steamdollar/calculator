@@ -32,7 +32,7 @@ export const getBalanceSlice = createSlice({
                                 state.balances.push(action.payload);
                         }
 
-                        console.log(current(state.balances));
+                        // console.log(current(state.balances));
                         state.status = null;
                 })
                         .addCase(getBalanceInfo.pending, (state) => {

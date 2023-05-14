@@ -1,8 +1,11 @@
 import React, { useEffect, useRef } from "react";
 //import Chart from "chart.js/auto";
 import { Chart, registerables } from "chart.js";
+import styled from "styled-components";
 
 Chart.register(...registerables);
+
+const GraphWrapper = styled.div``;
 
 const PieChart = ({ balanceData }) => {
         const chartRef = useRef(null);
@@ -48,10 +51,10 @@ const PieChart = ({ balanceData }) => {
                                                 },
                                                 options: {
                                                         plugins: {
-                                                                title: {
+                                                                legend: {
                                                                         display: true,
-                                                                        text: title,
                                                                 },
+
                                                                 tooltip: {
                                                                         callbacks: {
                                                                                 label: function (
@@ -71,7 +74,11 @@ const PieChart = ({ balanceData }) => {
                 }
         }, [data, labels, title]);
 
-        return <canvas ref={chartRef} />;
+        return (
+                <GraphWrapper>
+                        <canvas ref={chartRef} />
+                </GraphWrapper>
+        );
 };
 
 export default PieChart;

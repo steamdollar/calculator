@@ -24,8 +24,8 @@ export const WalletList = () => {
                 (state) => state.walletRegister.status
         );
 
-        const moveToWalletpage = (addr) => {
-                navigate(`/wallet/${addr}`);
+        const moveToWalletpage = (addr, name) => {
+                navigate(`/wallet/${addr}?name=${name}`);
         };
 
         useEffect(() => {
@@ -37,7 +37,10 @@ export const WalletList = () => {
                         <WalletTable key={k}>
                                 <span
                                         onClick={() =>
-                                                moveToWalletpage(v.address)
+                                                moveToWalletpage(
+                                                        v.address,
+                                                        v.name
+                                                )
                                         }
                                 >
                                         {v.address}
