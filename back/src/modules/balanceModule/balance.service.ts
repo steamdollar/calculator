@@ -2,9 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
 import { Coin } from "../../models/coin.model";
 import { makeResponseObj, responseObj } from "../../@types/response";
-import { minErc20Abi } from "../../utils/abi";
 import { Web3Provider } from "../web3Module/web3.provider";
-import { ethers } from "ethers";
 import {
         balanceResponse,
         getTokenBalance,
@@ -12,8 +10,6 @@ import {
         makeTokenList,
         selectService,
 } from "./balance.utils";
-import { InitService } from "../../utils/init.service";
-import { Gecko } from "../../models/gecko.model";
 
 @Injectable()
 export class BalanceService {

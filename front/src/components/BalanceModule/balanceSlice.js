@@ -21,10 +21,19 @@ export const getBalanceSlice = createSlice({
         },
         extraReducers: (state) => {
                 state.addCase(getBalanceInfo.fulfilled, (state, action) => {
-                        state.status = null;
+                        const index = state.balances.findIndex(
+                                (item) =>
+                                        item.network === action.payload.network
+                        );
 
-                        state.balances.push(action.payload);
+                        if (index !== -1) {
+                                state.balances[index] = action.payload;
+                        } else {
+                                state.balances.push(action.payload);
+                        }
+
                         console.log(current(state.balances));
+                        state.status = null;
                 })
                         .addCase(getBalanceInfo.pending, (state) => {
                                 state.status = "loading";
