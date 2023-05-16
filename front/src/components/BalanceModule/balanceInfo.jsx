@@ -27,13 +27,16 @@ const WalletId = styled.div`
 `;
 
 const CardsContainer = styled.div`
-        border: 1px solid black;
+        border: 1px solid red;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
 `;
 
 const ChartWrapper = styled.div`
-        min-height: 250px;
-        min-width: 250px;
-        padding: 0 0 0 5%;
+        min-height: 225px;
+        min-width: 225px;
+        max-width: 225px;
 `;
 
 export const BalanceInfo = () => {
@@ -67,19 +70,20 @@ export const BalanceInfo = () => {
                                         getBalance(v);
                                 }}
                                 style={{
-                                        border: "1px solid black",
-                                        padding: "2.5% 20% 2.5% 20%",
+                                        border: "1px solid green",
+                                        padding: "2.5% 2.5% 2.5% 2.5%",
+                                        width: "40%",
                                 }}
                         >
-                                <span
+                                <div
                                         style={{
                                                 fontSize: "24px",
                                                 marginLeft: "1%",
                                         }}
                                 >
                                         {v}
-                                </span>
-                                <span>
+                                </div>
+                                <div>
                                         {balanceDTO.findIndex(
                                                 (item) => item.network === v
                                         ) === -1 ? (
@@ -89,7 +93,7 @@ export const BalanceInfo = () => {
                                                         style={{
                                                                 display: "flex",
                                                                 justifyContent:
-                                                                        "space-between",
+                                                                        "space-evenly",
                                                         }}
                                                 >
                                                         <ChartWrapper>
@@ -116,7 +120,7 @@ export const BalanceInfo = () => {
                                                         />
                                                 </div>
                                         )}
-                                </span>
+                                </div>
                         </div>
                 );
         });
