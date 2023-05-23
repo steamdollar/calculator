@@ -69,7 +69,7 @@ const getNativeTokenInfo = async (
         );
 
         let ids = "ethereum";
-        let nativeTokenSymbol = "eth";
+        let nativeTokenSymbol = "ETH";
 
         if (chain === "Matic") {
                 ids = "matic-network";
