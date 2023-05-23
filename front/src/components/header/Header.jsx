@@ -22,6 +22,9 @@ export function Header() {
                         <span>
                                 <Link to="/wallet/:walletId">Wallet</Link>
                         </span>
+                        <span>
+                                <Link to="/coin">Coin</Link>
+                        </span>
                 </Navigator>
         );
 }

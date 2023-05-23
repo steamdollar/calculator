@@ -3,6 +3,7 @@ import { Header } from "./components/header/Header";
 import { TradingModule } from "./components/tradingModule/index";
 import { WalletModule } from "./components/walletModule";
 import { BalanceInfo } from "./components/BalanceModule/balanceInfo";
+import { CoinRegisterForm } from "./components/coinModule/coinRegisterForm";
 
 function App() {
         return (
@@ -21,6 +22,10 @@ function App() {
                                 <Route
                                         path="/wallet/:walletId"
                                         element={<BalanceInfo />}
+                                ></Route>
+                                <Route
+                                        path="/coin"
+                                        element={<CoinRegisterForm />}
                                 ></Route>
                         </Routes>
                 </div>

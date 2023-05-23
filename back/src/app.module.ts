@@ -8,8 +8,6 @@ import { SequelizeModule } from "@nestjs/sequelize";
 import { Sequelize } from "sequelize-typescript";
 import { Wallet } from "./models/wallet.model";
 import { Trading } from "./models/trading.model";
-import { AirDrop } from "./models/airdrop.model";
-import { Project } from "./models/project.model";
 import { Coin } from "./models/coin.model";
 import { Gecko } from "./models/gecko.model";
 
@@ -31,14 +29,7 @@ import { InitService } from "./utils/init.service";
                         username: process.env.DB_USER,
                         password: process.env.DB_PASSWORD,
                         database: process.env.DB_NAME,
-                        models: [
-                                Wallet,
-                                Trading,
-                                AirDrop,
-                                Gecko,
-                                Project,
-                                Coin,
-                        ],
+                        models: [Wallet, Trading, Gecko, Coin],
                 }),
                 TradingModule,
                 WalletModule,
