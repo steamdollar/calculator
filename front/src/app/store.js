@@ -4,6 +4,7 @@ import tradingRecordReducer from "../components/tradingModule/tradingRecord/trad
 import walletRegisterReducer from "../components/walletModule/registerForm/walletSlice";
 import walletListReducer from "../components/walletModule/walletListModule/walletListSlice.js";
 import getBalanceReducer from "../components/BalanceModule/balanceSlice";
+import checkAddressReducer from "../components/coinModule/coinRegisterSlice";
 
 export const store = configureStore({
         reducer: {
@@ -12,5 +13,6 @@ export const store = configureStore({
                 walletRegister: walletRegisterReducer,
                 walletList: walletListReducer,
                 balanceGetter: getBalanceReducer,
+                addressInfo: checkAddressReducer,
         },
 });
