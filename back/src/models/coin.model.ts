@@ -14,4 +14,7 @@ export class Coin extends Model<Coin> {
 
         @Column(DataType.STRING(42))
         ca: string;
+
+        @Column(DataType.STRING(8))
+        symbol: string;
 }
