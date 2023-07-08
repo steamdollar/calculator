@@ -68,10 +68,9 @@ export class CoinService {
                                 const existingCoin =
                                         await this.coinModel.findOne({
                                                 where: {
-                                                        token: dataSaved.token,
-                                                        symbol: dataSaved.symbol,
                                                         chain: dataSaved.chain,
                                                         ca: dataSaved.ca,
+                                                        symbol: dataSaved.symbol,
                                                 },
                                                 transaction: txHost.transaction,
                                         });

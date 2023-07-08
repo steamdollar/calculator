@@ -31,6 +31,20 @@ export const checkAddressIsToken = createSlice({
                         })
                         .addCase(getAddressInfo.rejected, (state) => {
                                 state.status = "error";
+                        })
+                        .addCase(saveCoinInfo.fulfilled, (state, action) => {
+                                if (action.payload.status === 0) {
+                                        alert(action.payload.msg);
+                                        state.status = null;
+                                        state.address = null;
+                                        state.tokenInfo = null;
+                                }
+                        })
+                        .addCase(saveCoinInfo.pending, (state) => {
+                                state.status = "loading";
+                        })
+                        .addCase(saveCoinInfo.rejected, (state) => {
+                                state.status = "error";
                         });
         },
 });
@@ -41,6 +55,23 @@ export const getAddressInfo = createAsyncThunk(
                 const response = await axios.get(
                         `${process.env.REACT_APP_BACKEND_SERVER}/coin/checkCoinInfo?address=${address}&chain=${chain}`
                 );
+                if (response.data.status === 1) {
+                        const err = new Error(response.data.msg);
+                        alert(err);
+                        throw err;
+                }
+                return response.data;
+        }
+);
+
+export const saveCoinInfo = createAsyncThunk(
+        "POST/SAVEADDRESS",
+        async ({ address, chain, tokenInfo }) => {
+                const response = await axios.post(
+                        `${process.env.REACT_APP_BACKEND_SERVER}/coin/saveCoinInfo`,
+                        { ca: address, chain, symbol: tokenInfo.symbol }
+                );
+
                 if (response.data.status === 1) {
                         const err = new Error(response.data.msg);
                         alert(err);
