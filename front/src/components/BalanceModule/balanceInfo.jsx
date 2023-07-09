@@ -56,12 +56,6 @@ export const BalanceInfo = () => {
                 dispatch(getBalanceInfo({ address: walletId, network }));
         };
 
-        const qwe = () => {
-                console.log(
-                        balanceDTO.filter((data) => data.network === "Ethereum")
-                );
-        };
-
         const balanceCard = networkList.map((v, k) => {
                 return (
                         <div
@@ -143,9 +137,6 @@ export const BalanceInfo = () => {
                                         <CardsContainer>
                                                 {balanceCard}
                                         </CardsContainer>
-                                        <div>
-                                                <button onClick={qwe} />
-                                        </div>
                                 </div>
                         )}
                 </WalletPageWrap>

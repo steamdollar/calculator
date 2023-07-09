@@ -7,6 +7,7 @@ import { Web3Module } from "../web3Module/web3.module";
 import { BalanceController } from "./balance.controller";
 import { BalanceService } from "./balance.service";
 import { Gecko } from "../../models/gecko.model";
+import { RedisService } from "../../utils/redis.service";
 
 @Module({
         imports: [
@@ -15,6 +16,6 @@ import { Gecko } from "../../models/gecko.model";
                 Web3Module,
         ],
         controllers: [BalanceController],
-        providers: [BalanceService, InitService],
+        providers: [BalanceService, InitService, RedisService],
 })
 export class BalanceModule {}

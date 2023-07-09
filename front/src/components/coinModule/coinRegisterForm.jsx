@@ -76,6 +76,16 @@ export const CoinRegisterForm = () => {
         const addrInfoDTO = useSelector((state) => state.addressInfo);
         const [tab, setTab] = useState("Register");
 
+        const alertIfSyntaxError = (addrInfoDTO) => {
+                if (!isProperAddress(addrInfoDTO.address)) {
+                        alert(
+                                "Wrong address length. Check token address Again."
+                        );
+                        return false;
+                }
+                return true;
+        };
+
         const setCA = (e) => {
                 dispatch(setAddress(e.target.value));
         };
@@ -85,10 +95,7 @@ export const CoinRegisterForm = () => {
         };
 
         const getTokenData = () => {
-                if (!isProperAddress(addrInfoDTO.address)) {
-                        alert(
-                                "Wrong address length. Check token address Again."
-                        );
+                if (!alertIfSyntaxError(addrInfoDTO)) {
                         return;
                 }
 
@@ -96,10 +103,7 @@ export const CoinRegisterForm = () => {
         };
 
         const saveToken = () => {
-                if (!isProperAddress(addrInfoDTO.address)) {
-                        alert(
-                                "Wrong address length. Check token address Again."
-                        );
+                if (!alertIfSyntaxError(addrInfoDTO)) {
                         return;
                 }
 

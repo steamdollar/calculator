@@ -3,8 +3,9 @@ echo "terminating obsolete procedure.."
 
 back=4000
 front=3000
+redis=6379
 
-for val in $back $front 
+for val in $back $front $redis
 do
     port=$val
 
@@ -20,7 +21,7 @@ do
     fi
 done
 
-sleep 3
+sleep 2
 
 echo "ports initialized.."
 
@@ -35,6 +36,9 @@ then
     cd front
     npm start
 else
+
+    redis-server &
+
     cd back
     npm run start &
 
@@ -42,4 +46,5 @@ else
 
     cd front
     npm start
+
 fi

@@ -10,12 +10,14 @@ import {
         makeTokenList,
         selectService,
 } from "./balance.utils";
+import { RedisService } from "../../utils/redis.service";
 
 @Injectable()
 export class BalanceService {
         constructor(
                 @InjectModel(Coin) private coinModel: typeof Coin,
-                private readonly web3Provider: Web3Provider
+                private readonly web3Provider: Web3Provider,
+                private readonly redisService: RedisService
         ) {}
 
         async getBalance(
@@ -23,6 +25,18 @@ export class BalanceService {
                 chain: string,
                 fiat?: string
         ): Promise<responseObj | balanceResponse> {
+                const key = `wallet:${chain}:${address}`;
+
+                let assetData = await this.redisService.get(key);
+
+                if (
+                        assetData &&
+                        new Date().getTime() - assetData.timestamp < 60 * 1000
+                ) {
+                        console.log("send cached data");
+                        return makeBalanceResponse(assetData.data);
+                }
+
                 try {
                         const tokenList = await this.coinModel.findAll({
                                 where: {
@@ -45,6 +59,11 @@ export class BalanceService {
                                 provider,
                                 chain
                         );
+
+                        await this.redisService.set(key, {
+                                data: balances,
+                                timestamp: new Date().getTime(),
+                        });
 
                         return makeBalanceResponse(balances);
                 } catch (e) {

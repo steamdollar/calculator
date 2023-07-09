@@ -2,12 +2,14 @@ import React, { useEffect, useRef } from "react";
 //import Chart from "chart.js/auto";
 import { Chart, registerables } from "chart.js";
 import styled from "styled-components";
+import { useLocation } from "react-router-dom";
 
 Chart.register(...registerables);
 
 const GraphWrapper = styled.div``;
 
 const PieChart = ({ balanceData }) => {
+        // let location = useLocation();
         const chartRef = useRef(null);
         const chartInstance = useRef(null);
 
