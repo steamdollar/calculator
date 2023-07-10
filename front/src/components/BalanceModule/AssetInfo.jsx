@@ -32,7 +32,7 @@ const AssetInfoForcard = ({ assetData }) => {
                                                 {" = " +
                                                         parseFloat(
                                                                 v.balance
-                                                        ).toFixed(2) +
+                                                        ).toFixed(4) +
                                                         " * "}
 
                                                 {"$" +

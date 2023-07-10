@@ -60,6 +60,7 @@ export const getBalanceInfo = createAsyncThunk(
                         network,
                         balances: response.data.balances,
                 };
+
                 return balanceWithNetwork;
         }
 );
