@@ -1,1 +1,8 @@
-export const networkList = ["Ethereum", "Optimism", "Arbitrum One", "Matic"];
+export const networkList = [
+        "Ethereum",
+        "Optimism",
+        "Arbitrum One",
+        "Matic",
+        "avax",
+        "bsc",
+];

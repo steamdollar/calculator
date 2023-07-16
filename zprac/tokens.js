@@ -1,5 +1,6 @@
 const ethers = require("ethers");
 const dotenv = require("dotenv");
+
 dotenv.config();
 
 const provider = new ethers.InfuraProvider(
@@ -142,3 +143,23 @@ const getWalletTokenBalances = async (walletAddress) => {
 // main();
 
 // //https://ipfs.io/ipfs/QmYL2tZCSGLDGEHfbpX72Sceu8GzzMsPdCwmoCjicGjZYL
+
+const providerAvax = new ethers.JsonRpcProvider(
+        "https://api.avax.network/ext/bc/C/rpc"
+);
+
+console.log(providerAvax);
+
+const contractAddress = "0x2F6F07CDcf3588944Bf4C42aC74ff24bF56e7590";
+const contract = new ethers.Contract(
+        contractAddress,
+        minimalErc20Abi,
+        providerAvax
+);
+
+const main = async () => {
+        const decimals = await contract.decimals();
+        console.log(`Decimals: ${decimals}`);
+};
+
+main();
