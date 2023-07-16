@@ -50,12 +50,14 @@ import { Web3Provider } from "./web3.provider";
                                                                 "INFURA_ETHEREUM_MAINNET_KEY"
                                                         ),
                                                 },
-                                                // avalanche: {
-                                                //         url: "avalanche",
-                                                //         apiKey: configService.get(
-                                                //                 "INFURA_AVALANCHE_MAINNET_KEY"
-                                                //         ),
-                                                // },
+                                        },
+                                        etc: {
+                                                avax: {
+                                                        url: "https://api.avax.network/ext/bc/C/rpc",
+                                                },
+                                                bsc: {
+                                                        url: "https://bsc-dataseed1.defibit.io",
+                                                },
                                         },
                                 };
                         },

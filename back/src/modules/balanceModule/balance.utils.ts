@@ -1,4 +1,9 @@
-import { AlchemyProvider, ethers, InfuraProvider } from "ethers";
+import {
+        AlchemyProvider,
+        ethers,
+        InfuraProvider,
+        JsonRpcProvider,
+} from "ethers";
 import { minErc20Abi } from "../../utils/abi";
 import axios from "axios";
 import { Gecko } from "../../models/gecko.model";
@@ -26,23 +31,24 @@ export const makeTokenList = (tokenList) => {
 };
 
 export const selectService = (chain) => {
-        if (
-                chain === "Ethereum" ||
-                "Arbitrum One" ||
-                "Matic" ||
-                "goerli" ||
-                "Optimism"
-        ) {
+        const forAlchemy = [
+                "Ethereum",
+                "Arbitrum One",
+                "Matic",
+                "goerli",
+                "Optimism",
+        ];
+        if (forAlchemy.includes(chain)) {
                 return "alchemy";
         } else {
-                return "infura";
+                return "etc";
         }
 };
 
 export const getTokenBalance = async (
         address: string,
         tokensToReq: string[],
-        provider: AlchemyProvider | InfuraProvider,
+        provider: AlchemyProvider | InfuraProvider | JsonRpcProvider,
         chain: string,
         fiat: string = "usd"
 ) => {
@@ -60,7 +66,7 @@ export const getTokenBalance = async (
 const getNativeTokenInfo = async (
         chain: string,
         address: string,
-        provider: AlchemyProvider | InfuraProvider,
+        provider: AlchemyProvider | InfuraProvider | JsonRpcProvider,
         balances: any,
         fiat: string = "usd"
 ) => {
@@ -70,10 +76,16 @@ const getNativeTokenInfo = async (
 
         let ids = "ethereum";
         let nativeTokenSymbol = "ETH";
-
+        //
         if (chain === "Matic") {
                 ids = "matic-network";
                 nativeTokenSymbol = "matic";
+        } else if (chain === "avax") {
+                ids = "avalanche-2";
+                nativeTokenSymbol = "avax";
+        } else if (chain === "bsc") {
+                ids = "binancecoin";
+                nativeTokenSymbol = "bnb";
         }
         const response = await axios.get(
                 `https://api.coingecko.com/api/v3/simple/price?ids=${ids}&vs_currencies=${fiat}`
@@ -90,6 +102,9 @@ const getNativeTokenInfo = async (
 };
 
 const getGeckoChainId = async (chain) => {
+        // coingecko에서 사용하는 플랫폼 아이디 목록을 얻기 위해서는
+        // https://api.coingecko.com/api/v3/asset_platforms
+        // 이 url 참조
         const geckoChainId = await Gecko.findOne({
                 where: {
                         chain: chain,
@@ -103,7 +118,7 @@ const getGeckoChainId = async (chain) => {
 const getTokenInfo = async (
         address: string,
         tokensToReq: string[],
-        provider: AlchemyProvider | InfuraProvider,
+        provider: AlchemyProvider | InfuraProvider | JsonRpcProvider,
         chainId: string,
         balances: any,
         fiat: string = "usd"
