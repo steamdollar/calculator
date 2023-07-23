@@ -58,6 +58,9 @@ import { Web3Provider } from "./web3.provider";
                                                 bsc: {
                                                         url: "https://bsc-dataseed1.defibit.io",
                                                 },
+                                                zksync: {
+                                                        url: "https://mainnet.era.zksync.io",
+                                                },
                                         },
                                 };
                         },

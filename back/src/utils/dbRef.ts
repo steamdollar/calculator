@@ -100,4 +100,16 @@ export const initGeckochainId = [
                 geckoChainId: "polygon-pos",
                 chain: "Matic",
         },
+        {
+                geckoChainId: "avalanche",
+                chain: "avax",
+        },
+        {
+                geckoChainId: "binance-smart-chain",
+                chain: "bsc",
+        },
+        {
+                geckoChainId: "zksync",
+                chain: "zksync",
+        },
 ];
