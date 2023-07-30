@@ -1,14 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { React } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useParams } from "react-router-dom";
 import styled from "styled-components";
-import { firstLetterUpper } from "../../util/checkValue";
-import { networkList } from "../../util/network";
 import { WalletList } from "../walletModule/walletListModule/walletList";
-import AssetInfoForcard from "./AssetInfo";
-import { setAddress, getBalanceInfo } from "./balanceSlice";
-import PieChart from "./Graph";
+import { setAddress } from "./balanceSlice";
+import { BalanceCard } from "./BalanceCard";
 
 const WalletPageWrap = styled.div`
         margin: 0 auto;
@@ -34,12 +31,6 @@ const CardsContainer = styled.div`
         margin: 0 auto;
 `;
 
-const ChartWrapper = styled.div`
-        min-height: 225px;
-        min-width: 225px;
-        max-width: 225px;
-`;
-
 export const BalanceInfo = () => {
         const dispatch = useDispatch();
         const balanceDTO = useSelector((state) => state.balanceGetter.balances);
@@ -59,74 +50,6 @@ export const BalanceInfo = () => {
         useEffect(() => {
                 dispatch(setAddress(walletId));
         }, [dispatch]);
-
-        const getBalance = (network) => {
-                dispatch(getBalanceInfo({ address: walletId, network }));
-        };
-
-        const balanceCard = networkList.map((v, k) => {
-                return (
-                        <div
-                                key={k}
-                                onClick={() => {
-                                        getBalance(v);
-                                }}
-                                style={{
-                                        border: "0.5px solid green",
-                                        padding: "2.5% 2.5% 2.5% 2.5%",
-                                        width: "44.8%",
-                                        maxWidth: "600px",
-                                }}
-                        >
-                                <div
-                                        style={{
-                                                fontSize: "24px",
-                                                marginLeft: "1%",
-                                        }}
-                                >
-                                        {firstLetterUpper(v)}
-                                </div>
-                                <div>
-                                        {balanceDTO.findIndex(
-                                                (item) => item.network === v
-                                        ) === -1 ? (
-                                                <div> click to get Info</div>
-                                        ) : (
-                                                <div
-                                                        style={{
-                                                                display: "flex",
-                                                                justifyContent:
-                                                                        "space-evenly",
-                                                        }}
-                                                >
-                                                        <ChartWrapper>
-                                                                <PieChart
-                                                                        key={k}
-                                                                        balanceData={balanceDTO.filter(
-                                                                                (
-                                                                                        dataset
-                                                                                ) =>
-                                                                                        dataset.network ===
-                                                                                        v
-                                                                        )}
-                                                                />
-                                                        </ChartWrapper>
-
-                                                        <AssetInfoForcard
-                                                                assetData={balanceDTO.filter(
-                                                                        (
-                                                                                dataset
-                                                                        ) =>
-                                                                                dataset.network ===
-                                                                                v
-                                                                )}
-                                                        />
-                                                </div>
-                                        )}
-                                </div>
-                        </div>
-                );
-        });
 
         return (
                 <WalletPageWrap>
@@ -148,7 +71,7 @@ export const BalanceInfo = () => {
                                                         total.toFixed(2)}
                                         </div>
                                         <CardsContainer>
-                                                {balanceCard}
+                                                <BalanceCard />
                                         </CardsContainer>
                                 </div>
                         )}

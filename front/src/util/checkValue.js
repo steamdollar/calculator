@@ -16,3 +16,11 @@ export const isProperAddress = (address) => {
 export const firstLetterUpper = (string) => {
         return string.replace(/\b[a-z]/g, (char) => char.toUpperCase());
 };
+
+export const alertIfSyntaxError = (addrInfoDTO) => {
+        if (!isProperAddress(addrInfoDTO.address)) {
+                alert("Wrong address length. Check token address Again.");
+                return false;
+        }
+        return true;
+};
