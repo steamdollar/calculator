@@ -20,16 +20,6 @@ export class balanceResponse {
         balances: balance[];
 }
 
-export const makeTokenList = (tokenList) => {
-        let tokensToReq = [];
-
-        for (let i = 0; i < tokenList.length; i++) {
-                tokensToReq.push(tokenList[i].dataValues.ca);
-        }
-
-        return tokensToReq;
-};
-
 export const selectService = (chain) => {
         const forAlchemy = [
                 "Ethereum",

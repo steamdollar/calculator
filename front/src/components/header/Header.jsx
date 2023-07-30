@@ -8,6 +8,8 @@ const Navigator = styled.nav`
         padding: 0px 25%;
         font-size: 20px;
         justify-content: space-between;
+        height: 50px;
+        align-items: center;
 `;
 
 export function Header() {

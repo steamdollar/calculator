@@ -7,7 +7,6 @@ import {
         balanceResponse,
         getTokenBalance,
         makeBalanceResponse,
-        makeTokenList,
         selectService,
 } from "./balance.utils";
 import { RedisService } from "../../utils/redis.service";
@@ -26,7 +25,6 @@ export class BalanceService {
                 fiat?: string
         ): Promise<responseObj | balanceResponse> {
                 const key = `wallet:${chain}:${address}`;
-
                 let assetData = await this.redisService.get(key);
 
                 if (
@@ -44,18 +42,14 @@ export class BalanceService {
                                 },
                         });
 
-                        const tokensToReq = makeTokenList(tokenList);
-
-                        let service = selectService(chain);
-
                         const provider = this.web3Provider.getProvider(
-                                service,
+                                selectService(chain),
                                 chain
                         );
 
                         const balances = await getTokenBalance(
                                 address,
-                                tokensToReq,
+                                tokenList.map((v) => v.dataValues.ca),
                                 provider,
                                 chain
                         );

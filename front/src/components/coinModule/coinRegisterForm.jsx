@@ -9,30 +9,21 @@ import {
 } from "./coinRegisterSlice";
 import { networkList } from "../../util/network";
 import { isProperAddress } from "../../util/checkValue";
-
-const Wrapper = styled.div`
-        margin: 0 auto;
-        width: 80%;
-
-        > div {
-                margin: 0 auto;
-                width: 60%;
-                padding: 0 10%;
-        }
-`;
+import { CoinList } from "./coinListForm";
+import { ChainList } from "./ChainList";
 
 const CoinSelectBox = styled.span`
         > select {
                 width: 18%;
-                height: 4vh;
                 text-align: center;
                 font-size: 16px;
                 min-height: 24px;
+                max-height: 24px;
         }
 `;
 
 const CoinInput = styled.input`
-        width: 55%;
+        width: 50%;
         border: none;
         border-bottom: 1px solid gray;
         padding: 0.5%;
@@ -120,16 +111,8 @@ export const CoinRegisterForm = () => {
                 }
         };
 
-        const chainList = networkList.map((v, k) => {
-                return (
-                        <option key={k} value={v}>
-                                {v}
-                        </option>
-                );
-        });
-
         return (
-                <Wrapper>
+                <>
                         <div
                                 style={{
                                         marginBottom: "4%",
@@ -144,27 +127,27 @@ export const CoinRegisterForm = () => {
                         </div>
                         {tab === "Register" ? (
                                 <>
-                                        <div style={{ marginBottom: "3%" }}>
+                                        <div
+                                                style={{
+                                                        marginBottom: "4%",
+                                                        margin: "0 auto",
+                                                }}
+                                        >
                                                 <CoinSelectBox
                                                         style={{
                                                                 marginRight:
                                                                         "5%",
+                                                                marginLeft: "5%",
                                                         }}
                                                 >
-                                                        <select
-                                                                onChange={
-                                                                        chooseChain
-                                                                }
-                                                        >
-                                                                {chainList}
-                                                        </select>
+                                                        <ChainList />
                                                 </CoinSelectBox>
                                                 <span>
                                                         <span
                                                                 style={{
                                                                         marginRight:
                                                                                 "2%",
-                                                                        fontSize: "16px",
+                                                                        fontSize: "18px",
                                                                 }}
                                                         >
                                                                 Address{" "}
@@ -191,8 +174,9 @@ export const CoinRegisterForm = () => {
                                                         <div
                                                                 style={{
                                                                         width: "50%",
-
+                                                                        marginTop: "3%",
                                                                         textAlign: "center",
+                                                                        fontSize: "20px",
                                                                 }}
                                                         >
                                                                 {" "}
@@ -261,8 +245,10 @@ export const CoinRegisterForm = () => {
                                         </TokenInfo>
                                 </>
                         ) : (
-                                <div>코인 리스트...</div>
+                                <div>
+                                        <CoinList />
+                                </div>
                         )}
-                </Wrapper>
+                </>
         );
 };

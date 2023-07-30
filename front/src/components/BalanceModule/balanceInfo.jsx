@@ -3,6 +3,7 @@ import { React } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useParams } from "react-router-dom";
 import styled from "styled-components";
+import { firstLetterUpper } from "../../util/checkValue";
 import { networkList } from "../../util/network";
 import { WalletList } from "../walletModule/walletListModule/walletList";
 import AssetInfoForcard from "./AssetInfo";
@@ -23,14 +24,14 @@ const ChooseWallet = styled.div`
 const WalletId = styled.div`
         margin-bottom: 5%;
         text-align: center;
-        font-size: 24px;
+        font-size: 20px;
 `;
 
 const CardsContainer = styled.div`
-        border: 1px solid red;
         display: flex;
         flex-wrap: wrap;
-        justify-content: center;
+        max-width: 1200px;
+        margin: 0 auto;
 `;
 
 const ChartWrapper = styled.div`
@@ -48,6 +49,13 @@ export const BalanceInfo = () => {
         const queryString = new URLSearchParams(location.search);
         const walletName = queryString.get("name");
 
+        const total = balanceDTO.reduce((acc1, network) => {
+                const networkTotal = network.balances.reduce((acc2, token) => {
+                        return acc2 + parseFloat(token.balance) * token.price;
+                }, 0);
+                return acc1 + networkTotal;
+        }, 0);
+
         useEffect(() => {
                 dispatch(setAddress(walletId));
         }, [dispatch]);
@@ -64,9 +72,10 @@ export const BalanceInfo = () => {
                                         getBalance(v);
                                 }}
                                 style={{
-                                        border: "1px solid green",
+                                        border: "0.5px solid green",
                                         padding: "2.5% 2.5% 2.5% 2.5%",
-                                        width: "40%",
+                                        width: "44.8%",
+                                        maxWidth: "600px",
                                 }}
                         >
                                 <div
@@ -75,7 +84,7 @@ export const BalanceInfo = () => {
                                                 marginLeft: "1%",
                                         }}
                                 >
-                                        {v}
+                                        {firstLetterUpper(v)}
                                 </div>
                                 <div>
                                         {balanceDTO.findIndex(
@@ -132,8 +141,12 @@ export const BalanceInfo = () => {
                                 <div>
                                         <WalletId>
                                                 Wallet :
-                                                {`${walletId} (${walletName})`}
+                                                {` ${walletId} (${walletName})`}
                                         </WalletId>
+                                        <div>
+                                                {"Total balance : $" +
+                                                        total.toFixed(2)}
+                                        </div>
                                         <CardsContainer>
                                                 {balanceCard}
                                         </CardsContainer>

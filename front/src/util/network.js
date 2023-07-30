@@ -6,4 +6,5 @@ export const networkList = [
         "avax",
         "bsc",
         "zksync",
+        "linea",
 ];

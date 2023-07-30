@@ -5,7 +5,12 @@ import { makeResponseObj, responseObj } from "../../@types/response";
 import { TxService } from "../../utils/tx.service";
 import { Coin } from "../../models/coin.model";
 import { Wallet } from "../../models/wallet.model";
-import { addressForCheck, addressInfo, coinInfoDTO } from "./coin.type";
+import {
+        addressForCheck,
+        addressInfo,
+        coinInfoDTO,
+        coinListResponse,
+} from "./coin.type";
 import { Web3Provider } from "../web3Module/web3.provider";
 import { ContractFactory, ethers } from "ethers";
 import { minErc20Abi } from "../../utils/abi";
@@ -92,5 +97,26 @@ export class CoinService {
                                 return makeResponseObj(1, e.message);
                         }
                 });
+        }
+
+        async getCoinList(
+                chain: string
+        ): Promise<coinListResponse | responseObj> {
+                try {
+                        const coinList = await Coin.findAll({
+                                where: {
+                                        chain: chain,
+                                },
+                                attributes: ["symbol", "ca"],
+                                raw: true,
+                        });
+                        return { coinList, status: 0, msg: "done" };
+                } catch (e) {
+                        console.log(e);
+                        return makeResponseObj(
+                                1,
+                                "failed to retrieve coin list of designated network."
+                        );
+                }
         }
 }

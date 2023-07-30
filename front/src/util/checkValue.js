@@ -12,3 +12,7 @@ export const isProperAddress = (address) => {
         }
         return true;
 };
+
+export const firstLetterUpper = (string) => {
+        return string.replace(/\b[a-z]/g, (char) => char.toUpperCase());
+};

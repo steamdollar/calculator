@@ -1,5 +1,5 @@
 export interface coinInfoDTO {
-        chain: string;
+        chain?: string;
         ca: string;
         symbol: string;
 }
@@ -15,4 +15,14 @@ export interface addressInfo {
         decimals?: number;
         name?: string;
         symbol?: string;
+}
+
+export interface networkInfo {
+        network: string;
+}
+
+export interface coinListResponse {
+        coinList: coinInfoDTO[];
+        status: number;
+        msg: string;
 }
