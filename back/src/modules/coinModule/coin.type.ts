@@ -22,6 +22,7 @@ export interface networkInfo {
 }
 
 export interface coinListResponse {
+        chain: string;
         coinList: coinInfoDTO[];
         status: number;
         msg: string;

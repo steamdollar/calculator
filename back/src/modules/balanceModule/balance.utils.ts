@@ -64,19 +64,8 @@ const getNativeTokenInfo = async (
                 await provider.getBalance(address)
         );
 
-        let ids = "ethereum";
-        let nativeTokenSymbol = "ETH";
-        //
-        if (chain === "Matic") {
-                ids = "matic-network";
-                nativeTokenSymbol = "matic";
-        } else if (chain === "avax") {
-                ids = "avalanche-2";
-                nativeTokenSymbol = "avax";
-        } else if (chain === "bsc") {
-                ids = "binancecoin";
-                nativeTokenSymbol = "bnb";
-        }
+        const [ids, nativeTokenSymbol] = getNativeTokenSymbol(chain);
+
         const response = await axios.get(
                 `https://api.coingecko.com/api/v3/simple/price?ids=${ids}&vs_currencies=${fiat}`
         );
@@ -91,6 +80,23 @@ const getNativeTokenInfo = async (
         balances.push(nativeTokenbalance);
 };
 
+const getNativeTokenSymbol = (chain) => {
+        switch (chain) {
+                case "matic": {
+                        return ["matic-network", "matic"];
+                }
+                case "avax": {
+                        return ["avalanche-2", "avax"];
+                }
+                case "bsc": {
+                        return ["binancecoin", "bnb"];
+                }
+                default: {
+                        return ["ethereum", "ETH"];
+                }
+        }
+};
+
 const getGeckoChainId = async (chain) => {
         // coingecko에서 사용하는 플랫폼 아이디 목록을 얻기 위해서는
         // https://api.coingecko.com/api/v3/asset_platforms
@@ -100,9 +106,10 @@ const getGeckoChainId = async (chain) => {
                         chain: chain,
                 },
                 attributes: ["geckoChainId"],
+                raw: true,
         });
 
-        return geckoChainId.dataValues.geckoChainId;
+        return geckoChainId.geckoChainId;
 };
 
 const getTokenInfo = async (
@@ -115,7 +122,8 @@ const getTokenInfo = async (
 ) => {
         for (const ca of tokensToReq) {
                 const contract = new ethers.Contract(ca, minErc20Abi, provider);
-                const url = `https://api.coingecko.com/api/v3/simple/token_price/${chainId}?contract_addresses=${ca}&vs_currencies=${fiat}`;
+                const apiUrl = `https://api.coingecko.com/api/v3/simple/token_price`;
+                const url = `${apiUrl}/${chainId}?contract_addresses=${ca}&vs_currencies=${fiat}`;
 
                 const [balance, decimals] = await Promise.all([
                         contract.balanceOf(address),

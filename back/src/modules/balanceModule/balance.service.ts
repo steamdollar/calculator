@@ -32,7 +32,7 @@ export class BalanceService {
                         new Date().getTime() - assetData.timestamp < 60 * 1000
                 ) {
                         console.log("send cached data");
-                        return makeBalanceResponse(assetData.data);
+                        return;
                 }
 
                 try {
@@ -42,15 +42,13 @@ export class BalanceService {
                                 },
                         });
 
-                        const provider = this.web3Provider.getProvider(
-                                selectService(chain),
-                                chain
-                        );
-
                         const balances = await getTokenBalance(
                                 address,
                                 tokenList.map((v) => v.dataValues.ca),
-                                provider,
+                                this.web3Provider.getProvider(
+                                        selectService(chain),
+                                        chain
+                                ),
                                 chain
                         );
 

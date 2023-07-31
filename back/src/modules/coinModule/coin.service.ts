@@ -29,9 +29,10 @@ export class CoinService {
         ): Promise<addressInfo | responseObj> {
                 const { address, chain } = coinForCheck;
 
-                let service = selectService(chain);
-
-                const provider = this.web3Provider.getProvider(service, chain);
+                const provider = this.web3Provider.getProvider(
+                        selectService(chain),
+                        chain
+                );
                 try {
                         const contract = new ethers.Contract(
                                 address,
@@ -110,7 +111,7 @@ export class CoinService {
                                 attributes: ["symbol", "ca"],
                                 raw: true,
                         });
-                        return { coinList, status: 0, msg: "done" };
+                        return { chain, coinList, status: 0, msg: "done" };
                 } catch (e) {
                         console.log(e);
                         return makeResponseObj(
