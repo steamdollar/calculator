@@ -2,7 +2,6 @@ import { ConfigService } from "@nestjs/config";
 import { NestFactory } from "@nestjs/core";
 import { Sequelize } from "sequelize-typescript";
 import { AppModule } from "./app.module";
-import * as dotenv from "dotenv";
 import { Wallet } from "./models/wallet.model";
 import {
         initGeckochainId,
@@ -12,8 +11,6 @@ import {
 import { Trading } from "./models/trading.model";
 import { Coin } from "./models/coin.model";
 import { Gecko } from "./models/gecko.model";
-
-dotenv.config();
 
 async function bootstrap() {
         const app = await NestFactory.create(AppModule);
@@ -53,10 +50,7 @@ async function bootstrap() {
                 })();
         }
 
-        const allowedOrigin = [
-                configService.get("FRONTEND_ADDRESS"),
-                configService.get("FRONTEND_ADDRESS2"),
-        ];
+        const allowedOrigin = [configService.get("FRONTEND_ADDRESS")];
 
         app.enableCors({
                 origin: (origin, callback) => {

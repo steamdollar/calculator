@@ -1,10 +1,8 @@
-import { useEffect, useState } from "react";
 import { React } from "react";
-
 import { networkList } from "../../util/network";
 import { useDispatch, useSelector } from "react-redux";
 import PieChart from "./Graph";
-import AssetInfoForcard from "./AssetInfo";
+import { AssetInfoForCard } from "./AssetInfoForCard";
 import styled from "styled-components";
 import { getBalanceInfo } from "./balanceSlice";
 import { firstLetterUpper } from "../../util/checkValue";
@@ -47,11 +45,11 @@ export const BalanceCard = () => {
                                 }}
                         >
                                 <Network>{firstLetterUpper(v)}</Network>
-                                <div>
+                                <div key={k}>
                                         {balanceDTO.findIndex(
                                                 (item) => item.network === v
                                         ) === -1 ? (
-                                                <div> click to get Info</div>
+                                                <div> Click to get Info </div>
                                         ) : (
                                                 <div
                                                         style={{
@@ -62,7 +60,6 @@ export const BalanceCard = () => {
                                                 >
                                                         <ChartWrapper>
                                                                 <PieChart
-                                                                        key={k}
                                                                         balanceData={balanceDTO.filter(
                                                                                 (
                                                                                         dataset
@@ -73,7 +70,7 @@ export const BalanceCard = () => {
                                                                 />
                                                         </ChartWrapper>
 
-                                                        <AssetInfoForcard
+                                                        <AssetInfoForCard
                                                                 assetData={balanceDTO.filter(
                                                                         (
                                                                                 dataset

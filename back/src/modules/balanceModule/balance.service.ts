@@ -32,7 +32,7 @@ export class BalanceService {
                         new Date().getTime() - assetData.timestamp < 60 * 1000
                 ) {
                         console.log("send cached data");
-                        return;
+                        return makeBalanceResponse(assetData.data);
                 }
 
                 try {

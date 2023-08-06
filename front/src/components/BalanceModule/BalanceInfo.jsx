@@ -22,6 +22,7 @@ const WalletId = styled.div`
         margin-bottom: 5%;
         text-align: center;
         font-size: 20px;
+        line-height: 40px;
 `;
 
 const CardsContainer = styled.div`
@@ -61,19 +62,18 @@ export const BalanceInfo = () => {
                                         <WalletList />
                                 </div>
                         ) : (
-                                <div>
+                                <>
                                         <WalletId>
                                                 Wallet :
                                                 {` ${walletId} (${walletName})`}
-                                        </WalletId>
-                                        <div>
+                                                <br />
                                                 {"Total balance : $" +
                                                         total.toFixed(2)}
-                                        </div>
+                                        </WalletId>
                                         <CardsContainer>
                                                 <BalanceCard />
                                         </CardsContainer>
-                                </div>
+                                </>
                         )}
                 </WalletPageWrap>
         );

@@ -60,7 +60,7 @@ const getNativeTokenInfo = async (
         balances: any,
         fiat: string = "usd"
 ) => {
-        const nativeTokenBalance = ethers.formatEther(
+        const nativeTokenAmount = ethers.formatEther(
                 await provider.getBalance(address)
         );
 
@@ -72,7 +72,7 @@ const getNativeTokenInfo = async (
 
         const nativeTokenbalance: balance = {
                 name: Object.keys(response.data)[0],
-                balance: nativeTokenBalance,
+                balance: nativeTokenAmount,
                 symbol: nativeTokenSymbol,
                 price: response.data[ids][fiat],
         };
@@ -82,7 +82,7 @@ const getNativeTokenInfo = async (
 
 const getNativeTokenSymbol = (chain) => {
         switch (chain) {
-                case "matic": {
+                case "Matic": {
                         return ["matic-network", "matic"];
                 }
                 case "avax": {

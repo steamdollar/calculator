@@ -1,5 +1,4 @@
 import { Module } from "@nestjs/common";
-import { ConfigModule } from "@nestjs/config";
 import { SequelizeModule } from "@nestjs/sequelize";
 import { InitService } from "../../utils/init.service";
 import { Coin } from "../../models/coin.model";
@@ -10,11 +9,7 @@ import { Gecko } from "../../models/gecko.model";
 import { RedisService } from "../../utils/redis.service";
 
 @Module({
-        imports: [
-                ConfigModule.forRoot(),
-                SequelizeModule.forFeature([Coin, Gecko]),
-                Web3Module,
-        ],
+        imports: [SequelizeModule.forFeature([Coin, Gecko]), Web3Module],
         controllers: [BalanceController],
         providers: [BalanceService, InitService, RedisService],
 })

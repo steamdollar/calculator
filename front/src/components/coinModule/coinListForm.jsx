@@ -13,7 +13,7 @@ export const CoinList = () => {
                 dispatch(getCoinList({ network: chain }));
         };
 
-        const tokenTable = tokenList.filter((v) => v.chain == chain);
+        const tokenTable = tokenList.filter((v) => v.chain === chain);
         // const list = tokenTable.coinList.map((v, k) => {
         //         return (
         //                 <div key={k}>
