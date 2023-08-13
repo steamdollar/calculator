@@ -1,5 +1,7 @@
 import { ConfigService } from "@nestjs/config";
 import { NestFactory } from "@nestjs/core";
+import * as cookieParser from "cookie-parser";
+
 import { Sequelize } from "sequelize-typescript";
 import { AppModule } from "./app.module";
 import { Wallet } from "./models/wallet.model";
@@ -14,6 +16,7 @@ import { Gecko } from "./models/gecko.model";
 
 async function bootstrap() {
         const app = await NestFactory.create(AppModule);
+        app.use(cookieParser());
         const configService = app.get(ConfigService);
         const sequelize = app.get<Sequelize>(Sequelize);
 
@@ -36,17 +39,17 @@ async function bootstrap() {
                                 purpose: "airdrop, saving",
                         });
 
-                        for (let i = 0; i < initTradingRecord.length; i++) {
-                                await Trading.create(initTradingRecord[i]);
-                        }
+                        initTradingRecord.forEach(async (record) => {
+                                await Trading.create(record);
+                        });
 
-                        for (let i = 0; i < initTokenList.length; i++) {
-                                await Coin.create(initTokenList[i]);
-                        }
+                        initTokenList.forEach(async (record) => {
+                                await Coin.create(record);
+                        });
 
-                        for (let i = 0; i < initGeckochainId.length; i++) {
-                                await Gecko.create(initGeckochainId[i]);
-                        }
+                        initGeckochainId.forEach(async (record) => {
+                                await Gecko.create(record);
+                        });
                 })();
         }
 
@@ -60,6 +63,7 @@ async function bootstrap() {
                                 callback(new Error("not allowed by cors"));
                         }
                 },
+                credentials: true,
                 methods: "GET, POST, PUT, DELETE, HEAD",
         });
 

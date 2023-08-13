@@ -1,6 +1,12 @@
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import axios from "axios";
+import {
+        encodeUserInfo,
+        userInfoString,
+        encrypter,
+        decrypter,
+} from "./login.util";
 
 @Injectable()
 export class LoginService {
@@ -30,7 +36,7 @@ export class LoginService {
                         const url = "https://kauth.kakao.com/oauth/token?";
 
                         const headers = {
-                                "content-type":
+                                "Content-type":
                                         "application/x-www-form-urlencoded",
                         };
 
@@ -53,6 +59,8 @@ export class LoginService {
 
                         access_token = response.data.access_token;
                         token_type = response.data.token_type;
+
+                        // TODO : refresh token의 개념과 사용을 알아볼 것
                         refresh_token = response.data.refresh_token;
                         expires_in = response.data.expires_in;
                         refresh_token_expires_in =
@@ -62,12 +70,26 @@ export class LoginService {
                 }
 
                 try {
-                        const url = "http://kapi.kakao.com/v2/user/me";
+                        const url = "https://kapi.kakao.com/v2/user/me";
                         const header = {
                                 headers: {
                                         Authorization: `${token_type} ${access_token}`,
                                 },
                         };
+
+                        const response = await axios.get(url, header);
+
+                        const encryptedUserInfo = encrypter(
+                                userInfoString(response.data),
+                                this.configService.get("encrypt_code")
+                        );
+
+                        const cookieString = encodeUserInfo(
+                                encryptedUserInfo,
+                                this.configService.get("encode_salt")
+                        );
+
+                        return cookieString;
                 } catch (e) {
                         console.log(e);
                 }

@@ -1,6 +1,7 @@
 import { Controller, Get, Query, Res } from "@nestjs/common";
 import { LoginService } from "./login.service";
 import { ConfigService } from "@nestjs/config";
+import { Response } from "express";
 
 @Controller("login")
 export class LoginController {
@@ -16,8 +17,18 @@ export class LoginController {
         }
 
         @Get("kakaoToken")
-        async getKakaoToken(@Query() code: string) {
-                const as = await this.loginService.getKakaoToken(code);
-                return "qwweqweqe";
+        async getKakaoToken(@Res() res: Response, @Query() code: string) {
+                const cookieString = await this.loginService.getKakaoToken(
+                        code
+                );
+
+                console.log(cookieString);
+
+                res.cookie("userInfo", cookieString, {
+                        httpOnly: true,
+                        secure: process.env.NODE_ENV === "production",
+                        maxAge: 1000 * 60 * 60 * 24,
+                });
+                res.redirect("http://localhost:3000");
         }
 }
