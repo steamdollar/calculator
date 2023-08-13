@@ -84,9 +84,7 @@ export const CoinRegisterForm = () => {
                                         </TokenInfo>
                                 </>
                         ) : (
-                                <div>
-                                        <CoinList />
-                                </div>
+                                <CoinList />
                         )}
                 </>
         );

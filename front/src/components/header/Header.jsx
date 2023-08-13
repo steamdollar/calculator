@@ -27,6 +27,9 @@ export function Header() {
                         <span>
                                 <Link to="/coin">Coin</Link>
                         </span>
+                        <span>
+                                <Link to="/login">Login</Link>
+                        </span>
                 </Navigator>
         );
 }

@@ -60,35 +60,41 @@ const getNativeTokenInfo = async (
         balances: any,
         fiat: string = "usd"
 ) => {
-        const nativeTokenBalance = ethers.formatEther(
+        const nativeTokenAmount = ethers.formatEther(
                 await provider.getBalance(address)
         );
 
-        let ids = "ethereum";
-        let nativeTokenSymbol = "ETH";
-        //
-        if (chain === "Matic") {
-                ids = "matic-network";
-                nativeTokenSymbol = "matic";
-        } else if (chain === "avax") {
-                ids = "avalanche-2";
-                nativeTokenSymbol = "avax";
-        } else if (chain === "bsc") {
-                ids = "binancecoin";
-                nativeTokenSymbol = "bnb";
-        }
+        const [ids, nativeTokenSymbol] = getNativeTokenSymbol(chain);
+
         const response = await axios.get(
                 `https://api.coingecko.com/api/v3/simple/price?ids=${ids}&vs_currencies=${fiat}`
         );
 
         const nativeTokenbalance: balance = {
                 name: Object.keys(response.data)[0],
-                balance: nativeTokenBalance,
+                balance: nativeTokenAmount,
                 symbol: nativeTokenSymbol,
                 price: response.data[ids][fiat],
         };
 
         balances.push(nativeTokenbalance);
+};
+
+const getNativeTokenSymbol = (chain) => {
+        switch (chain) {
+                case "Matic": {
+                        return ["matic-network", "matic"];
+                }
+                case "avax": {
+                        return ["avalanche-2", "avax"];
+                }
+                case "bsc": {
+                        return ["binancecoin", "bnb"];
+                }
+                default: {
+                        return ["ethereum", "ETH"];
+                }
+        }
 };
 
 const getGeckoChainId = async (chain) => {
@@ -100,9 +106,10 @@ const getGeckoChainId = async (chain) => {
                         chain: chain,
                 },
                 attributes: ["geckoChainId"],
+                raw: true,
         });
 
-        return geckoChainId.dataValues.geckoChainId;
+        return geckoChainId.geckoChainId;
 };
 
 const getTokenInfo = async (
@@ -115,7 +122,8 @@ const getTokenInfo = async (
 ) => {
         for (const ca of tokensToReq) {
                 const contract = new ethers.Contract(ca, minErc20Abi, provider);
-                const url = `https://api.coingecko.com/api/v3/simple/token_price/${chainId}?contract_addresses=${ca}&vs_currencies=${fiat}`;
+                const apiUrl = `https://api.coingecko.com/api/v3/simple/token_price`;
+                const url = `${apiUrl}/${chainId}?contract_addresses=${ca}&vs_currencies=${fiat}`;
 
                 const [balance, decimals] = await Promise.all([
                         contract.balanceOf(address),

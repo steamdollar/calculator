@@ -42,15 +42,13 @@ export class BalanceService {
                                 },
                         });
 
-                        const provider = this.web3Provider.getProvider(
-                                selectService(chain),
-                                chain
-                        );
-
                         const balances = await getTokenBalance(
                                 address,
                                 tokenList.map((v) => v.dataValues.ca),
-                                provider,
+                                this.web3Provider.getProvider(
+                                        selectService(chain),
+                                        chain
+                                ),
                                 chain
                         );
 

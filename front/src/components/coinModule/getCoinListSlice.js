@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk, current } from "@reduxjs/toolkit";
 import axios from "axios";
-import { networkList } from "../../util/network";
 
 const initialState = {
         coinList: [],
@@ -14,7 +13,25 @@ export const getTokenList = createSlice({
         extraReducers: (state) => {
                 state.addCase(getCoinList.pending, (state) => {
                         state.status = "loading";
-                }).addCase(getCoinList.fulfilled, (state, action) => {});
+                })
+                        .addCase(getCoinList.fulfilled, (state, action) => {
+                                const index = state.coinList.findIndex(
+                                        (item) =>
+                                                item.chain ===
+                                                action.payload.chain
+                                );
+
+                                if (index !== -1) {
+                                        state.coinList[index] = action.payload;
+                                } else {
+                                        state.coinList.push(action.payload);
+                                }
+
+                                state.status = null;
+                        })
+                        .addCase(getCoinList.rejected, (state) => {
+                                state.status = "failed";
+                        });
         },
 });
 
@@ -29,6 +46,7 @@ export const getCoinList = createAsyncThunk(
                         alert(err);
                         throw err;
                 }
+
                 return response.data;
         }
 );
