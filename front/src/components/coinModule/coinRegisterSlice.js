@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk, current } from "@reduxjs/toolkit";
 import axios from "axios";
 import { networkList } from "../../util/network";
+import { axiosConfig } from "../../util/axios";
 
 const initialState = {
         chain: networkList[0],
@@ -59,8 +60,8 @@ export const checkAddressIsToken = createSlice({
 export const getAddressInfo = createAsyncThunk(
         "GET/CHECKADDRESS",
         async ({ address, chain }) => {
-                const response = await axios.get(
-                        `${process.env.REACT_APP_BACKEND_SERVER}/coin/checkCoinInfo?address=${address}&chain=${chain}`
+                const response = await axiosConfig.get(
+                        `/coin/checkCoinInfo?address=${address}&chain=${chain}`
                 );
                 if (response.data.status === 1) {
                         const err = new Error(response.data.msg);
@@ -74,10 +75,11 @@ export const getAddressInfo = createAsyncThunk(
 export const saveCoinInfo = createAsyncThunk(
         "POST/SAVEADDRESS",
         async ({ address, chain, tokenInfo }) => {
-                const response = await axios.post(
-                        `${process.env.REACT_APP_BACKEND_SERVER}/coin/saveCoinInfo`,
-                        { ca: address, chain, symbol: tokenInfo.symbol }
-                );
+                const response = await axiosConfig.post(`/coin/saveCoinInfo`, {
+                        ca: address,
+                        chain,
+                        symbol: tokenInfo.symbol,
+                });
 
                 if (response.data.status === 1) {
                         const err = new Error(response.data.msg);
@@ -91,9 +93,10 @@ export const saveCoinInfo = createAsyncThunk(
 export const getCoinList = createAsyncThunk(
         "GET/GETCOINLIST",
         async ({ network }) => {
-                const response = await axios.get(
-                        `${process.env.REACT_APP_BACKEND_SERVER}/coin/getCoinList?network=${network}`
+                const response = await axiosConfig.get(
+                        `/coin/getCoinList?network=${network}`
                 );
+
                 if (response.data.status !== 0) {
                         const err = new Error(response.data.msg);
                         alert(err);

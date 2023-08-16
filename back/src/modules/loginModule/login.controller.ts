@@ -22,8 +22,6 @@ export class LoginController {
                         code
                 );
 
-                console.log(cookieString);
-
                 res.cookie("userInfo", cookieString, {
                         httpOnly: true,
                         secure: process.env.NODE_ENV === "production",

@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import { axiosConfig } from "../../../util/axios";
 
 const defaultSet = {
         loss: 0,
@@ -44,10 +45,16 @@ export const tradingRecordSlice = createSlice({
 export const getTradeRecord = createAsyncThunk(
         "GET/GETTRADING",
         async (data) => {
-                const response = await axios.get(
-                        `${process.env.REACT_APP_BACKEND_SERVER}/trading/getTradingRecord`,
+                // const response = await axios.get(
+                //         `${process.env.REACT_APP_BACKEND_SERVER}/trading/getTradingRecord`,
+                //         data
+                // );
+
+                const response = await axiosConfig.get(
+                        "/trading/getTradingRecord",
                         data
                 );
+
                 alert(response.data);
         }
 );

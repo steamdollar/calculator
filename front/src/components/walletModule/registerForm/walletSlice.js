@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import { axiosConfig } from "../../../util/axios";
 
 const testSet = {
         address: "0xcA257Dc2E925c67D396725A48FfB8A913f3e3CE8",
@@ -44,8 +45,13 @@ export const walletRegisterSlice = createSlice({
 export const saveWalletInfo = createAsyncThunk(
         "POST/SAVEWALLET",
         async (wallet) => {
-                const response = await axios.post(
-                        `${process.env.REACT_APP_BACKEND_SERVER}/wallet/saveWallet`,
+                // const response = await axios.post(
+                //         `${process.env.REACT_APP_BACKEND_SERVER}/wallet/saveWallet`,
+                //         wallet
+                // );
+
+                const response = await axiosConfig.post(
+                        "/wallet/saveWallet",
                         wallet
                 );
 

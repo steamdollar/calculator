@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk, current } from "@reduxjs/toolkit";
 import axios from "axios";
+import { axiosConfig } from "../../util/axios";
 
 const initialState = {
         coinList: [],
@@ -38,9 +39,10 @@ export const getTokenList = createSlice({
 export const getCoinList = createAsyncThunk(
         "GET/GETCOINLIST",
         async ({ network }) => {
-                const response = await axios.get(
-                        `${process.env.REACT_APP_BACKEND_SERVER}/coin/getCoinList?network=${network}`
+                const response = await axiosConfig.get(
+                        `/coin/getCoinList?network=${network}`
                 );
+
                 if (response.data.status !== 0) {
                         const err = new Error(response.data.msg);
                         alert(err);
@@ -50,7 +52,5 @@ export const getCoinList = createAsyncThunk(
                 return response.data;
         }
 );
-
-// export const { setAddress, setChain } = checkAddressIsToken.actions;
 
 export default getTokenList.reducer;

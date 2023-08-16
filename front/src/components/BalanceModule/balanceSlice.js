@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk, current } from "@reduxjs/toolkit";
 import axios from "axios";
+import { axiosConfig } from "../../util/axios";
 
 const testset = {
         address: null,
@@ -47,9 +48,10 @@ export const getBalanceSlice = createSlice({
 export const getBalanceInfo = createAsyncThunk(
         "GET/GETBALANCE",
         async ({ address, network }) => {
-                const response = await axios.get(
-                        `${process.env.REACT_APP_BACKEND_SERVER}/balance/getBalance?address=${address}&chain=${network}`
+                const response = await axiosConfig.get(
+                        `/balance/getBalance?address=${address}&chain=${network}`
                 );
+
                 if (response.data.status === 1) {
                         const err = new Error(response.data.msg);
                         alert(err);

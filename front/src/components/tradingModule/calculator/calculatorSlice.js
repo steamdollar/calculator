@@ -1,5 +1,6 @@
 import { createSlice, current, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import { axiosConfig } from "../../../util/axios";
 
 const testSet = {
         loss: 3,
@@ -84,10 +85,16 @@ export const calculatorSlice = createSlice({
 export const saveTradeInfo = createAsyncThunk(
         "POST/SAVETRADING",
         async (tableSaved) => {
-                const response = await axios.post(
-                        `${process.env.REACT_APP_BACKEND_SERVER}/trading/saveTradingData`,
+                // const response = await axios.post(
+                //         `${process.env.REACT_APP_BACKEND_SERVER}/trading/saveTradingData`,
+                //         tableSaved
+                // );
+
+                const response = await axiosConfig.post(
+                        "/trading/saveTradingData",
                         tableSaved
                 );
+
                 alert(response.data.msg);
         }
 );
