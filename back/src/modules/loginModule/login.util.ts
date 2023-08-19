@@ -42,5 +42,5 @@ export const decrypter = (text: string, secretKey: string) => {
         const decipher = crypto.createDecipheriv("aes-256-cbc", key, iv);
         let decrypted = decipher.update(encryptedText, "hex", "utf8");
         decrypted += decipher.final("utf8");
-        return decrypted;
+        return JSON.parse(decrypted);
 };

@@ -3,7 +3,7 @@ import { InjectModel } from "@nestjs/sequelize";
 import { Sequelize } from "sequelize-typescript";
 import { Wallet } from "../../models/wallet.model";
 import { makeResponseObj, responseObj } from "../../@types/response";
-import { walletDTO } from "./walletType";
+import { walletDTO } from "./wallet.type";
 import { TxService } from "../../utils/tx.service";
 
 @Injectable()
