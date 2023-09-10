@@ -51,7 +51,7 @@ export class WalletService {
         async getMyWalletInfo(): Promise<walletDTO[] | responseObj> {
                 let response: walletDTO[] | responseObj;
                 // TODO : 이 db랑 상호작용하는 함수들 다 여기 지저분 하게 놔둬야 하나?
-                // 다른데로 빼두면 외않됌?
+                // this가 있는데 어떻게 분리해내지?
                 const retreiveWalletData = async () => {
                         try {
                                 const walletData =

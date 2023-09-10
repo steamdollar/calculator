@@ -1,11 +1,14 @@
 import * as jwt from "jsonwebtoken";
 import * as crypto from "crypto";
+import { userInfo } from "./login.type";
 
-export const userInfoString = (userInfo: any): string => {
-        const nickName = userInfo.properties.nickname;
-        const email = userInfo.kakao_account.email;
+export const userInfoString = (userInfo: userInfo): string => {
+        const id = userInfo.id;
+        const name = userInfo.name;
+        const email = userInfo.email;
+        const pic = userInfo.pic;
 
-        const userInfoObj = { nickName, email };
+        const userInfoObj = { name, email, id, pic };
         const userInfoString = JSON.stringify(userInfoObj);
         return userInfoString;
 };
