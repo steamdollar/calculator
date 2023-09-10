@@ -1,4 +1,4 @@
-import { Module } from "@nestjs/common";
+import { Module, MiddlewareConsumer, RequestMethod } from "@nestjs/common";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
@@ -15,6 +15,7 @@ import { BalanceModule } from "./modules/balanceModule/balance.module";
 import { InitService } from "./utils/init.service";
 import { LoginModule } from "./modules/loginModule/login.module";
 import { sequelizeConfig } from "./config/db.config";
+import { CheckCookieMiddleware } from "./utils/cookieMiddleware";
 
 @Module({
         imports: [
@@ -36,4 +37,11 @@ import { sequelizeConfig } from "./config/db.config";
 })
 export class AppModule {
         constructor(private sequelize: Sequelize) {}
+
+        configure(consumer: MiddlewareConsumer) {
+                consumer.apply(CheckCookieMiddleware).forRoutes({
+                        path: "*",
+                        method: RequestMethod.ALL,
+                });
+        }
 }

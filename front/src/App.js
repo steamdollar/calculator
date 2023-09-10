@@ -6,7 +6,6 @@ import { BalanceInfo } from "./components/BalanceModule/BalanceInfo";
 import { CoinRegisterForm } from "./components/coinModule/coinRegisterForm";
 import MainContainer from "./globalDesign";
 import { Login } from "./components/loginModule/Login";
-import { KakaoLogin } from "./components/loginModule/KakaoLogin";
 
 function App() {
         return (
@@ -34,10 +33,6 @@ function App() {
                                         <Route
                                                 path="/login"
                                                 element={<Login />}
-                                        ></Route>
-                                        <Route
-                                                path="/kakaologin"
-                                                element={<KakaoLogin />}
                                         ></Route>
                                 </Routes>
                         </MainContainer>

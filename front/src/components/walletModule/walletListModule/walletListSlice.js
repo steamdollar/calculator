@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+
+import { axiosConfig } from "../../../util/axios";
 
 const initialState = { data: [] };
 
@@ -23,9 +24,7 @@ export const walletListSlice = createSlice({
 });
 
 export const getWalletInfo = createAsyncThunk("GET/GETWALLETINFO", async () => {
-        const response = await axios.get(
-                `${process.env.REACT_APP_BACKEND_SERVER}/wallet/getmywalletinfo`
-        );
+        const response = await axiosConfig.get("/wallet/getmywalletinfo");
 
         if (response.data.status !== undefined) {
                 alert(response.data.msg);

@@ -1,11 +1,14 @@
 import * as jwt from "jsonwebtoken";
 import * as crypto from "crypto";
+import { userInfo } from "./login.type";
 
-export const userInfoString = (userInfo: any): string => {
-        const nickName = userInfo.properties.nickname;
-        const email = userInfo.kakao_account.email;
+export const userInfoString = (userInfo: userInfo): string => {
+        const id = userInfo.id;
+        const name = userInfo.name;
+        const email = userInfo.email;
+        const pic = userInfo.pic;
 
-        const userInfoObj = { nickName, email };
+        const userInfoObj = { name, email, id, pic };
         const userInfoString = JSON.stringify(userInfoObj);
         return userInfoString;
 };
@@ -42,5 +45,5 @@ export const decrypter = (text: string, secretKey: string) => {
         const decipher = crypto.createDecipheriv("aes-256-cbc", key, iv);
         let decrypted = decipher.update(encryptedText, "hex", "utf8");
         decrypted += decipher.final("utf8");
-        return decrypted;
+        return JSON.parse(decrypted);
 };

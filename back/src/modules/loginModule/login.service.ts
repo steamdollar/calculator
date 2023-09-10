@@ -7,14 +7,16 @@ import {
         encrypter,
         decrypter,
 } from "./login.util";
+import { makeResponseObj } from "../../@types/response";
 
 @Injectable()
 export class LoginService {
         constructor(private configService: ConfigService) {}
 
         async toKakaoLoginPage() {
-                const clientId = this.configService.get("clientId");
-                const redirectUrl = this.configService.get("redirect_url");
+                const clientId = this.configService.get("kakao_clientId");
+                const redirectUrl =
+                        this.configService.get("kakao_redirect_url");
 
                 const url =
                         `https://kauth.kakao.com/oauth/authorize` +
@@ -43,13 +45,13 @@ export class LoginService {
                         const qs =
                                 `grant_type=authorization_code` +
                                 `&client_id=${this.configService.get(
-                                        "clientId"
+                                        "kakao_clientId"
                                 )}` +
                                 `&client_secret=${this.configService.get(
-                                        "client_secret"
+                                        "kakao_client_secret"
                                 )}` +
                                 `&redirectUri:${this.configService.get(
-                                        "redirect_url"
+                                        "kakao_redirect_url"
                                 )}` +
                                 `&code=${code.code}`;
 
@@ -79,19 +81,104 @@ export class LoginService {
 
                         const response = await axios.get(url, header);
 
-                        const encryptedUserInfo = encrypter(
-                                userInfoString(response.data),
-                                this.configService.get("encrypt_code")
-                        );
+                        const kakaoData = response.data.kakao_account;
+
+                        const userInfo = {
+                                id: response.data.id,
+                                name: kakaoData.profile.nickname,
+                                email: kakaoData.email,
+                                pic: response.data.properties.thumbnail_image,
+                        };
 
                         const cookieString = encodeUserInfo(
-                                encryptedUserInfo,
+                                encrypter(
+                                        userInfoString(userInfo),
+                                        this.configService.get("encrypt_code")
+                                ),
                                 this.configService.get("encode_salt")
                         );
 
                         return cookieString;
                 } catch (e) {
                         console.log(e);
+                }
+        }
+
+        async toGoogleLoginPage() {
+                const clientId = this.configService.get("google_clientId");
+                const redirectUrl = this.configService.get(
+                        "google_redirect_url"
+                );
+
+                const url =
+                        `https://accounts.google.com/o/oauth2/v2/auth` +
+                        `?client_id=${clientId}` +
+                        `&redirect_uri=${redirectUrl}` +
+                        `&response_type=code` +
+                        `&scope=email profile openid`;
+
+                return url;
+        }
+
+        async getGoogleToken(code) {
+                const url = "https://oauth2.googleapis.com/token";
+                const codeForToken = code.code;
+
+                let access_token;
+
+                try {
+                        const response = await axios.post(url, {
+                                code: codeForToken,
+                                client_id: this.configService.get(
+                                        "google_clientId"
+                                ),
+                                client_secret: this.configService.get(
+                                        "google_client_secret"
+                                ),
+                                redirect_uri: this.configService.get(
+                                        "google_redirect_url"
+                                ),
+                                grant_type: "authorization_code",
+                        });
+
+                        access_token = response.data.access_token;
+                } catch (e) {
+                        console.log(e);
+                        makeResponseObj(1, "google login failed");
+                }
+
+                try {
+                        const response = await axios.get(
+                                "https://www.googleapis.com/oauth2/v2/userinfo",
+                                {
+                                        // Request Header에 Authorization 추가
+                                        headers: {
+                                                Authorization: `Bearer ${access_token}`,
+                                        },
+                                }
+                        );
+
+                        const googleData = response.data;
+
+                        const userInfo = {
+                                id: googleData.id,
+                                email: googleData.email,
+                                name: googleData.name,
+                                pic: googleData.picture,
+                        };
+
+                        const cookieString = encodeUserInfo(
+                                encrypter(
+                                        userInfoString(userInfo),
+                                        this.configService.get("encrypt_code")
+                                ),
+                                this.configService.get("encode_salt")
+                        );
+
+                        return cookieString;
+                } catch (e) {
+                        console.log(e);
+                        makeResponseObj(1, "google login failed");
                 }
         }
 }

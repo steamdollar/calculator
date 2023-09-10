@@ -22,13 +22,32 @@ export class LoginController {
                         code
                 );
 
-                console.log(cookieString);
+                res.cookie("userInfo", cookieString, {
+                        httpOnly: true,
+                        secure: process.env.NODE_ENV === "production",
+                        maxAge: 1000 * 60 * 60 * 24,
+                });
+                res.redirect("http://localhost:3000");
+        }
+
+        @Get("googleLogin")
+        async googleLoginPage(@Res() res) {
+                const url = await this.loginService.toGoogleLoginPage();
+                res.status(200).redirect(url);
+        }
+
+        @Get("googleToken")
+        async getGoogleToken(@Res() res: Response, @Query() code: string) {
+                const cookieString = await this.loginService.getGoogleToken(
+                        code
+                );
 
                 res.cookie("userInfo", cookieString, {
                         httpOnly: true,
                         secure: process.env.NODE_ENV === "production",
                         maxAge: 1000 * 60 * 60 * 24,
                 });
+
                 res.redirect("http://localhost:3000");
         }
 }

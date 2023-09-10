@@ -1,13 +1,8 @@
-const axios = require("axios")
+import axios from "axios";
 
-export const config = {
-    baesURL : process.env.REACT_APP_BACKEND_SERVER,
-    headers : {
-        withCredentials : true,
-        'Content-type' : 'application/json'
-    }
-}
-
-// export const request = axios.create({
-//     ...config,
-// })
+export const axiosConfig = axios.create({
+        baseURL: process.env.REACT_APP_BACKEND_SERVER,
+        timeout: 10000,
+        headers: { "Content-Type": "application/json" },
+        withCredentials: true,
+});
