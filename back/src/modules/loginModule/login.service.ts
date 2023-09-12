@@ -8,10 +8,15 @@ import {
         decrypter,
 } from "./login.util";
 import { makeResponseObj } from "../../@types/response";
+import { GoogleOAuth } from "./login.type";
 
 @Injectable()
 export class LoginService {
-        constructor(private configService: ConfigService) {}
+        private googleOAuthService: GoogleOAuth;
+
+        constructor(private configService: ConfigService) {
+                this.googleOAuthService = new GoogleOAuth();
+        }
 
         async toKakaoLoginPage() {
                 const clientId = this.configService.get("kakao_clientId");
@@ -110,14 +115,10 @@ export class LoginService {
                         "google_redirect_url"
                 );
 
-                const url =
-                        `https://accounts.google.com/o/oauth2/v2/auth` +
-                        `?client_id=${clientId}` +
-                        `&redirect_uri=${redirectUrl}` +
-                        `&response_type=code` +
-                        `&scope=email profile openid`;
-
-                return url;
+                return this.googleOAuthService.redirectToProvider({
+                        clientId,
+                        redirectUrl,
+                });
         }
 
         async getGoogleToken(code) {
