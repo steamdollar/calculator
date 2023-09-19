@@ -8,7 +8,7 @@ import {
         decrypter,
 } from "./login.util";
 import { makeResponseObj } from "../../@types/response";
-import { GoogleOAuth } from "./login.type";
+import { GoogleOAuth, reqTokenDTO, userInfoDTO } from "./login.type";
 
 @Injectable()
 export class LoginService {
@@ -122,64 +122,40 @@ export class LoginService {
         }
 
         async getGoogleToken(code) {
-                const url = "https://oauth2.googleapis.com/token";
-                const codeForToken = code.code;
+                const args: reqTokenDTO = {
+                        client_id: this.configService.get("google_clientId"),
+                        client_secret: this.configService.get(
+                                "google_client_secret"
+                        ),
+                        redirect_uri: this.configService.get(
+                                "google_redirect_url"
+                        ),
+                        grant_type: "authorization_code",
+                };
 
-                let access_token;
+                const access_token = await this.googleOAuthService.getToken(
+                        code,
+                        args
+                );
 
-                try {
-                        const response = await axios.post(url, {
-                                code: codeForToken,
-                                client_id: this.configService.get(
-                                        "google_clientId"
-                                ),
-                                client_secret: this.configService.get(
-                                        "google_client_secret"
-                                ),
-                                redirect_uri: this.configService.get(
-                                        "google_redirect_url"
-                                ),
-                                grant_type: "authorization_code",
-                        });
+                const userInfo = await this.googleOAuthService.getUserInfo(
+                        access_token
+                );
 
-                        access_token = response.data.access_token;
-                } catch (e) {
-                        console.log(e);
-                        makeResponseObj(1, "google login failed");
-                }
+                // TODO : 앞 선 두 함수를 포함한 전체 getGoogleToken의 에러 처리를 어떻게 하면 좋을까..
 
-                try {
-                        const response = await axios.get(
-                                "https://www.googleapis.com/oauth2/v2/userinfo",
-                                {
-                                        // Request Header에 Authorization 추가
-                                        headers: {
-                                                Authorization: `Bearer ${access_token}`,
-                                        },
-                                }
-                        );
+                const cookieString = encodeUserInfo(
+                        encrypter(
+                                userInfoString(userInfo),
+                                this.configService.get("encrypt_code")
+                        ),
+                        this.configService.get("encode_salt")
+                );
 
-                        const googleData = response.data;
-
-                        const userInfo = {
-                                id: googleData.id,
-                                email: googleData.email,
-                                name: googleData.name,
-                                pic: googleData.picture,
-                        };
-
-                        const cookieString = encodeUserInfo(
-                                encrypter(
-                                        userInfoString(userInfo),
-                                        this.configService.get("encrypt_code")
-                                ),
-                                this.configService.get("encode_salt")
-                        );
-
-                        return cookieString;
-                } catch (e) {
-                        console.log(e);
-                        makeResponseObj(1, "google login failed");
-                }
+                //         return cookieString;
+                // } catch (e) {
+                //         // console.log(e);
+                //         makeResponseObj(1, "google login failed");
+                // }
         }
 }

@@ -1,20 +1,29 @@
+import { makeResponseObj, responseObj } from "../../@types/response";
 import axios from "axios";
 
-export interface userInfo {
+export interface userInfoDTO {
         id: string | number;
         name: string;
         email: string;
         pic?: string;
 }
 
-export interface OAuthRedirectDTO {
+interface OAuthRedirectDTO {
         clientId: string;
         redirectUrl: string;
 }
 
+export class reqTokenDTO {
+        client_id: string;
+        client_secret: string;
+        redirect_uri: string;
+        grant_type: string;
+}
+
+// abstract factory pattern을 사용해보자..
 abstract class OAuthService {
         tokenUrl: string;
-        accessToken: any;
+        exchangeTokenUrl: string;
 
         abstract redirectToProvider(args: OAuthRedirectDTO): string;
         // abstract handleCallback(): void;
@@ -25,8 +34,9 @@ abstract class OAuthService {
 }
 
 export class GoogleOAuth extends OAuthService {
-        tokenUrl = "https://oauth2.googleapis.com/token";
-        accessToken;
+        static tokenUrl = "https://oauth2.googleapis.com/token";
+        static exchangeTokenUrl =
+                "https://www.googleapis.com/oauth2/v2/userinfo";
 
         redirectToProvider(args: OAuthRedirectDTO): string {
                 const clientId = args.clientId;
@@ -42,16 +52,51 @@ export class GoogleOAuth extends OAuthService {
                 return url;
         }
 
-        async getToken(code) {
-                const url = this.tokenUrl;
+        async getToken(code, reqTokenDTO: reqTokenDTO) {
                 const codeForToken = code.code;
 
-                let accessToken;
-
                 try {
-                        const response = await axios.post(url, {
-                                code: codeForToken,
-                        });
-                } catch (e) {}
+                        const response = await axios.post(
+                                // static 변수는 class 명에서 뽑아쓴다.
+                                GoogleOAuth.tokenUrl,
+                                {
+                                        code: codeForToken,
+                                        ...reqTokenDTO,
+                                }
+                        );
+
+                        return response.data.access_token;
+                } catch (e) {
+                        console.error(e);
+                        return makeResponseObj(1, "google login failed");
+                }
+        }
+
+        async getUserInfo(access_token: string) {
+                try {
+                        const response = await axios.get(
+                                GoogleOAuth.exchangeTokenUrl,
+                                {
+                                        // Request Header에 Authorization 추가
+                                        headers: {
+                                                Authorization: `Bearer ${access_token}`,
+                                        },
+                                }
+                        );
+
+                        const googleData = response.data;
+
+                        const userInfo: userInfoDTO = {
+                                id: googleData.id,
+                                email: googleData.email,
+                                name: googleData.name,
+                                pic: googleData.picture,
+                        };
+
+                        return userInfo;
+                } catch (e) {
+                        console.log(e);
+                        return makeResponseObj(1, "google login failed");
+                }
         }
 }
