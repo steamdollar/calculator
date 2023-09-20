@@ -1,4 +1,3 @@
-import { makeResponseObj, responseObj } from "../../@types/response";
 import axios from "axios";
 
 export interface userInfoDTO {
@@ -8,12 +7,16 @@ export interface userInfoDTO {
         pic?: string;
 }
 
+// TOTHINK : 이런 것까지 굳이 타입을 만들어서 쓸 필요가 있나?
+// 이건 어차피프론트에서 데이터 전달하는 것도 아니고 백엔드에서만 상수적으로 사용하는거니까
+// 타입을 정의할 필요없을 것 같은데?
+// 그냥 인수 두개 따로 줘도 됨..
 interface OAuthRedirectDTO {
         clientId: string;
         redirectUrl: string;
 }
 
-export class reqTokenDTO {
+export interface reqTokenDTO {
         client_id: string;
         client_secret: string;
         redirect_uri: string;
@@ -63,13 +66,15 @@ export class GoogleOAuth extends OAuthService {
                                         ...reqTokenDTO,
                                 }
                         );
-                        // 여기서 따로 리턴 값의 타입을 지정해줄까?
-                        // 문제 없다면 status :0, value : ...
-                        // 있으면 status:1, value : ...
-                        return response.data.access_token;
+
+                        const accessToken = response.data.access_token;
+                        return { status: 0, token: accessToken };
                 } catch (e) {
                         console.error(e);
-                        return makeResponseObj(1, "google login failed");
+                        return {
+                                status: 1,
+                                msg: "failed to get access token",
+                        };
                 }
         }
 
@@ -78,7 +83,6 @@ export class GoogleOAuth extends OAuthService {
                         const response = await axios.get(
                                 GoogleOAuth.exchangeTokenUrl,
                                 {
-                                        // Request Header에 Authorization 추가
                                         headers: {
                                                 Authorization: `Bearer ${access_token}`,
                                         },
@@ -94,10 +98,13 @@ export class GoogleOAuth extends OAuthService {
                                 pic: googleData.picture,
                         };
 
-                        return userInfo;
+                        return { status: 0, userInfo: userInfo };
                 } catch (e) {
                         console.log(e);
-                        return makeResponseObj(1, "google login failed");
+                        return {
+                                status: 1,
+                                msg: "failed to get user information",
+                        };
                 }
         }
 }

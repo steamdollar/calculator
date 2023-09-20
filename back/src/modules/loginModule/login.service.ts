@@ -132,34 +132,48 @@ export class LoginService {
                         ),
                         grant_type: "authorization_code",
                 };
+                // TODO : 여전히 함수가 좀 길고 너저분하다. 더 리팩토링할 여지가 있을 듯
+                try {
+                        const getAccessTokenResult =
+                                await this.googleOAuthService.getToken(
+                                        code,
+                                        args
+                                );
 
-                const access_token = await this.googleOAuthService.getToken(
-                        code,
-                        args
-                );
+                        if (getAccessTokenResult.status === 1) {
+                                return makeResponseObj(
+                                        1,
+                                        getAccessTokenResult.msg
+                                );
+                        }
 
-                if (access_token instanceof responseObj) {
-                        return access_token;
+                        const getUserInfoResult =
+                                await this.googleOAuthService.getUserInfo(
+                                        getAccessTokenResult.token
+                                );
+
+                        if (getUserInfoResult.status === 1) {
+                                // TODO : 여기서 error를 throw하면..?
+                                return makeResponseObj(
+                                        1,
+                                        getUserInfoResult.msg
+                                );
+                        }
+
+                        const cookieString = encodeUserInfo(
+                                encrypter(
+                                        userInfoString(
+                                                getUserInfoResult.userInfo
+                                        ),
+                                        this.configService.get("encrypt_code")
+                                ),
+                                this.configService.get("encode_salt")
+                        );
+
+                        return cookieString;
+                } catch (e) {
+                        console.log(e);
+                        makeResponseObj(1, "google login failed");
                 }
-
-                const userInfo = await this.googleOAuthService.getUserInfo(
-                        access_token
-                );
-
-                // TODO : 앞 선 두 함수를 포함한 전체 getGoogleToken의 에러 처리를 어떻게 하면 좋을까..
-
-                // const cookieString = encodeUserInfo(
-                //         encrypter(
-                //                 userInfoString(userInfo),
-                //                 this.configService.get("encrypt_code")
-                //         ),
-                //         this.configService.get("encode_salt")
-                // );
-
-                //         return cookieString;
-                // } catch (e) {
-                //         // console.log(e);
-                //         makeResponseObj(1, "google login failed");
-                // }
         }
 }

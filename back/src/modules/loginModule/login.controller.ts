@@ -27,6 +27,7 @@ export class LoginController {
                         secure: process.env.NODE_ENV === "production",
                         maxAge: 1000 * 60 * 60 * 24,
                 });
+                // TODO : 프런트앤드의 url을 변수화
                 res.redirect("http://localhost:3000");
         }
 
