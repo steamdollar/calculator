@@ -7,7 +7,7 @@ import {
         encrypter,
         decrypter,
 } from "./login.util";
-import { makeResponseObj } from "../../@types/response";
+import { makeResponseObj, responseObj } from "../../@types/response";
 import { GoogleOAuth, reqTokenDTO, userInfoDTO } from "./login.type";
 
 @Injectable()
@@ -138,19 +138,23 @@ export class LoginService {
                         args
                 );
 
+                if (access_token instanceof responseObj) {
+                        return access_token;
+                }
+
                 const userInfo = await this.googleOAuthService.getUserInfo(
                         access_token
                 );
 
                 // TODO : 앞 선 두 함수를 포함한 전체 getGoogleToken의 에러 처리를 어떻게 하면 좋을까..
 
-                const cookieString = encodeUserInfo(
-                        encrypter(
-                                userInfoString(userInfo),
-                                this.configService.get("encrypt_code")
-                        ),
-                        this.configService.get("encode_salt")
-                );
+                // const cookieString = encodeUserInfo(
+                //         encrypter(
+                //                 userInfoString(userInfo),
+                //                 this.configService.get("encrypt_code")
+                //         ),
+                //         this.configService.get("encode_salt")
+                // );
 
                 //         return cookieString;
                 // } catch (e) {

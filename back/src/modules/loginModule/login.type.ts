@@ -22,18 +22,17 @@ export class reqTokenDTO {
 
 // abstract factory pattern을 사용해보자..
 abstract class OAuthService {
+        oAuthUrl: string;
         tokenUrl: string;
         exchangeTokenUrl: string;
 
         abstract redirectToProvider(args: OAuthRedirectDTO): string;
-        // abstract handleCallback(): void;
-
-        storeToken() {
-                console.log(`storing token..`);
-        }
+        abstract getToken(code, reqTokenDTO: reqTokenDTO);
+        abstract getUserInfo(access_token: string);
 }
 
 export class GoogleOAuth extends OAuthService {
+        static oAuthUrl = "https://accounts.google.com/o/oauth2/v2/auth";
         static tokenUrl = "https://oauth2.googleapis.com/token";
         static exchangeTokenUrl =
                 "https://www.googleapis.com/oauth2/v2/userinfo";
@@ -43,7 +42,7 @@ export class GoogleOAuth extends OAuthService {
                 const redirectUrl = args.redirectUrl;
 
                 const url =
-                        `https://accounts.google.com/o/oauth2/v2/auth` +
+                        `${GoogleOAuth.oAuthUrl}` +
                         `?client_id=${clientId}` +
                         `&redirect_uri=${redirectUrl}` +
                         `&response_type=code` +
@@ -64,7 +63,9 @@ export class GoogleOAuth extends OAuthService {
                                         ...reqTokenDTO,
                                 }
                         );
-
+                        // 여기서 따로 리턴 값의 타입을 지정해줄까?
+                        // 문제 없다면 status :0, value : ...
+                        // 있으면 status:1, value : ...
                         return response.data.access_token;
                 } catch (e) {
                         console.error(e);
