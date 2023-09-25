@@ -14,15 +14,29 @@ export class LoginService {
                 this.kakaoOauthService = new KakaoOauth();
         }
 
-        async toKakaoLoginPage() {
-                const clientId = this.configService.get("kakao_clientId");
-                const redirectUrl =
-                        this.configService.get("kakao_redirect_url");
-
-                return this.kakaoOauthService.redirectToProvider(
-                        clientId,
-                        redirectUrl
-                );
+        async toOauthLoginPage(service: string) {
+                switch (service) {
+                        case "kakao":
+                                return this.kakaoOauthService.redirectToProvider(
+                                        this.configService.get(
+                                                "kakao_clientId"
+                                        ),
+                                        this.configService.get(
+                                                "kakao_redirect_url"
+                                        )
+                                );
+                        case "google":
+                                return this.googleOAuthService.redirectToProvider(
+                                        this.configService.get(
+                                                "google_clientId"
+                                        ),
+                                        this.configService.get(
+                                                "google_redirect_url"
+                                        )
+                                );
+                        default:
+                                return "http://localhost:3000";
+                }
         }
 
         async getKakaoToken(code) {
@@ -83,18 +97,6 @@ export class LoginService {
                         console.log(e);
                         makeResponseObj(1, `google login failed : ${e}`);
                 }
-        }
-
-        async toGoogleLoginPage() {
-                const clientId = this.configService.get("google_clientId");
-                const redirectUrl = this.configService.get(
-                        "google_redirect_url"
-                );
-
-                return this.googleOAuthService.redirectToProvider(
-                        clientId,
-                        redirectUrl
-                );
         }
 
         async getGoogleToken(code) {

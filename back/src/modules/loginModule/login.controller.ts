@@ -12,22 +12,7 @@ export class LoginController {
 
         @Get("OauthLogin")
         async tokakaoLoginPage(@Res() res, @Query() s) {
-                let url: string;
-                switch (s.s) {
-                        case "kakao":
-                                url =
-                                        await this.loginService.toKakaoLoginPage();
-                                break;
-                        case "google":
-                                url =
-                                        await this.loginService.toGoogleLoginPage();
-                                break;
-                        default:
-                                res.status(200).redirect(
-                                        "http://localhost:3000"
-                                );
-                }
-
+                const url = await this.loginService.toOauthLoginPage(s.s);
                 res.status(200).redirect(url);
         }
 
