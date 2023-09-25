@@ -36,7 +36,7 @@ abstract class OAuthService {
 }
 
 // 구글과 카카오는 oauth login이 거의 동일하다. 구체적인 value만 다른 수준임.
-// 그런데 앞으로 또 다른 oauth 3rd patry가 추가되었을 때 그 쪽도 같ㅇ느 거란 보장이 있나?
+// 그런데 앞으로 또 다른 oauth 3rd patry가 추가되었을 때 그 쪽도 같을 거란 보장이 있나?
 // 기본 골자야 같겠지만..
 // 3rd party 별로 class 구현을 나누는게 지금으로서는 좋아보임.
 export class GoogleOAuth extends OAuthService {
@@ -176,8 +176,6 @@ export class KakaoOauth extends OAuthService {
                                 email: response.data.kakao_account.email,
                                 pic: response.data.properties.thumbnail_image,
                         };
-
-                        console.log(userInfo);
 
                         return { status: 0, userInfo };
                 } catch (e) {

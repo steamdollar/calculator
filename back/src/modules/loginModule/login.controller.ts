@@ -10,9 +10,24 @@ export class LoginController {
                 private readonly configService: ConfigService
         ) {}
 
-        @Get("kakaoLogin")
-        async tokakaoLoginPage(@Res() res) {
-                const url = await this.loginService.toKakaoLoginPage();
+        @Get("OauthLogin")
+        async tokakaoLoginPage(@Res() res, @Query() s) {
+                let url: string;
+                switch (s.s) {
+                        case "kakao":
+                                url =
+                                        await this.loginService.toKakaoLoginPage();
+                                break;
+                        case "google":
+                                url =
+                                        await this.loginService.toGoogleLoginPage();
+                                break;
+                        default:
+                                res.status(200).redirect(
+                                        "http://localhost:3000"
+                                );
+                }
+
                 res.status(200).redirect(url);
         }
 
@@ -29,12 +44,6 @@ export class LoginController {
                 });
                 // TODO : 프런트앤드의 url을 변수화
                 res.redirect("http://localhost:3000");
-        }
-
-        @Get("googleLogin")
-        async googleLoginPage(@Res() res) {
-                const url = await this.loginService.toGoogleLoginPage();
-                res.status(200).redirect(url);
         }
 
         @Get("googleToken")

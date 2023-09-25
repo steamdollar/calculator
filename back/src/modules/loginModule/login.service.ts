@@ -1,13 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
-import axios from "axios";
-import {
-        encodeUserInfo,
-        userInfoString,
-        encrypter,
-        decrypter,
-} from "./login.util";
-import { makeResponseObj, responseObj } from "../../@types/response";
+import { encodeUserInfo, userInfoString, encrypter } from "./login.util";
+import { makeResponseObj } from "../../@types/response";
 import { GoogleOAuth, reqTokenDTO, KakaoOauth } from "./login.type";
 
 @Injectable()
