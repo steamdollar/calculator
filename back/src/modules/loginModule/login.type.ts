@@ -1,5 +1,5 @@
+import { ErrorMessage } from "../../@types/error";
 import axios from "axios";
-import { RepositoryNotTreeError } from "typeorm";
 
 export interface userInfoDTO {
         id: string | number;
@@ -73,10 +73,7 @@ export class GoogleOAuth extends OAuthService {
                         return { status: 0, token: accessToken };
                 } catch (e) {
                         console.error(e);
-                        return {
-                                status: 1,
-                                msg: "failed to get access token",
-                        };
+                        throw new ErrorMessage("failed to get google token");
                 }
         }
 
@@ -103,14 +100,14 @@ export class GoogleOAuth extends OAuthService {
                         return { status: 0, userInfo: userInfo };
                 } catch (e) {
                         console.log(e);
-                        return {
-                                status: 1,
-                                msg: "failed to get user information",
-                        };
+                        throw new ErrorMessage(
+                                "failed to exchange google token to user info."
+                        );
                 }
         }
 }
 
+// TODO : type 명확히 지정
 export class KakaoOauth extends OAuthService {
         static oAuthUrl = "https://kauth.kakao.com/oauth/authorize";
         static tokenUrl = "https://kauth.kakao.com/oauth/token";
@@ -126,7 +123,7 @@ export class KakaoOauth extends OAuthService {
                 return redirect_url;
         }
 
-        async getToken(code: any, reqTokenDTO: reqTokenDTO) {
+        async getToken(code, reqTokenDTO: reqTokenDTO) {
                 const codeForToken = code.code;
 
                 const qs =
@@ -152,10 +149,7 @@ export class KakaoOauth extends OAuthService {
                         return { status: 0, result: response.data };
                 } catch (e) {
                         console.error(e);
-                        return {
-                                status: 1,
-                                msg: "failed to get access token",
-                        };
+                        throw new ErrorMessage("failed to get kakao token");
                 }
         }
 
@@ -180,10 +174,9 @@ export class KakaoOauth extends OAuthService {
                         return { status: 0, userInfo };
                 } catch (e) {
                         console.log(e);
-                        return {
-                                status: 1,
-                                msg: "failed to get user information",
-                        };
+                        throw new ErrorMessage(
+                                "failed to exchange kakao token to user info."
+                        );
                 }
         }
 }

@@ -3,6 +3,7 @@ import { ConfigService } from "@nestjs/config";
 import { encodeUserInfo, userInfoString, encrypter } from "./login.util";
 import { makeResponseObj } from "../../@types/response";
 import { GoogleOAuth, reqTokenDTO, KakaoOauth } from "./login.type";
+import { ErrorMessage } from "../../@types/error";
 
 @Injectable()
 export class LoginService {
@@ -40,11 +41,10 @@ export class LoginService {
         }
 
         async getKakaoToken(code) {
-                let access_token;
-                let token_type;
-                let refresh_token;
-                let expires_in;
-                let refresh_token_expires_in;
+                // TODO : refresh token
+                // let refresh_token;
+                // let expires_in;
+                // let refresh_token_expires_in;
 
                 try {
                         const args: reqTokenDTO = {
@@ -67,20 +67,10 @@ export class LoginService {
                                         args
                                 );
 
-                        if (getAccessTokenResult.status === 1) {
-                                throw getAccessTokenResult.msg;
-                        }
-
-                        const tokenPackage = getAccessTokenResult.result;
-
                         const getUserInfoResult =
                                 await this.kakaoOauthService.getUserInfo(
-                                        tokenPackage
+                                        getAccessTokenResult.result
                                 );
-
-                        if (getUserInfoResult.status === 1) {
-                                throw getAccessTokenResult.msg;
-                        }
 
                         const cookieString = encodeUserInfo(
                                 encrypter(
@@ -95,7 +85,12 @@ export class LoginService {
                         return cookieString;
                 } catch (e) {
                         console.log(e);
-                        makeResponseObj(1, `google login failed : ${e}`);
+                        if (e instanceof ErrorMessage) {
+                                makeResponseObj(
+                                        1,
+                                        `kakao login failed : ${e.message}`
+                                );
+                        }
                 }
         }
 
@@ -110,32 +105,22 @@ export class LoginService {
                         ),
                         grant_type: "authorization_code",
                 };
-                // TODO : 여전히 함수가 좀 길고 너저분하다. 더 리팩토링할 여지가 있을 듯
+
                 try {
-                        const getAccessTokenResult =
+                        const getAccessToken =
                                 await this.googleOAuthService.getToken(
                                         code,
                                         args
                                 );
 
-                        if (getAccessTokenResult.status === 1) {
-                                throw getAccessTokenResult.msg;
-                        }
-
-                        const getUserInfoResult =
+                        const getUserInfo =
                                 await this.googleOAuthService.getUserInfo(
-                                        getAccessTokenResult.token
+                                        getAccessToken.token
                                 );
-
-                        if (getUserInfoResult.status === 1) {
-                                throw getUserInfoResult.msg;
-                        }
 
                         const cookieString = encodeUserInfo(
                                 encrypter(
-                                        userInfoString(
-                                                getUserInfoResult.userInfo
-                                        ),
+                                        userInfoString(getUserInfo.userInfo),
                                         this.configService.get("encrypt_code")
                                 ),
                                 this.configService.get("encode_salt")
@@ -144,7 +129,13 @@ export class LoginService {
                         return cookieString;
                 } catch (e) {
                         console.log(e);
-                        makeResponseObj(1, `google login failed : ${e}`);
+
+                        if (e instanceof ErrorMessage) {
+                                makeResponseObj(
+                                        1,
+                                        `google login failed : ${e.message}`
+                                );
+                        }
                 }
         }
 }

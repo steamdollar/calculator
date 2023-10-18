@@ -22,13 +22,14 @@ export class LoginController {
                         code
                 );
 
+                // TODO : cookie config 변수화 > recycle
                 res.cookie("userInfo", cookieString, {
                         httpOnly: true,
                         secure: process.env.NODE_ENV === "production",
                         maxAge: 1000 * 60 * 60 * 24,
                 });
                 // TODO : 프런트앤드의 url을 변수화
-                res.redirect("http://localhost:3000");
+                res.redirect(this.configService.get("FRONTEND_ADDRESS"));
         }
 
         @Get("googleToken")
@@ -43,6 +44,6 @@ export class LoginController {
                         maxAge: 1000 * 60 * 60 * 24,
                 });
 
-                res.redirect("http://localhost:3000");
+                res.redirect(this.configService.get("FRONTEND_ADDRESS"));
         }
 }
