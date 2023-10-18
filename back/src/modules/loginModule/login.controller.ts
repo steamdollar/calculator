@@ -10,9 +10,9 @@ export class LoginController {
                 private readonly configService: ConfigService
         ) {}
 
-        @Get("kakaoLogin")
-        async tokakaoLoginPage(@Res() res) {
-                const url = await this.loginService.toKakaoLoginPage();
+        @Get("OauthLogin")
+        async tokakaoLoginPage(@Res() res, @Query() s) {
+                const url = await this.loginService.toOauthLoginPage(s.s);
                 res.status(200).redirect(url);
         }
 
@@ -22,18 +22,14 @@ export class LoginController {
                         code
                 );
 
+                // TODO : cookie config 변수화 > recycle
                 res.cookie("userInfo", cookieString, {
                         httpOnly: true,
                         secure: process.env.NODE_ENV === "production",
                         maxAge: 1000 * 60 * 60 * 24,
                 });
-                res.redirect("http://localhost:3000");
-        }
-
-        @Get("googleLogin")
-        async googleLoginPage(@Res() res) {
-                const url = await this.loginService.toGoogleLoginPage();
-                res.status(200).redirect(url);
+                // TODO : 프런트앤드의 url을 변수화
+                res.redirect(this.configService.get("FRONTEND_ADDRESS"));
         }
 
         @Get("googleToken")
@@ -48,6 +44,6 @@ export class LoginController {
                         maxAge: 1000 * 60 * 60 * 24,
                 });
 
-                res.redirect("http://localhost:3000");
+                res.redirect(this.configService.get("FRONTEND_ADDRESS"));
         }
 }

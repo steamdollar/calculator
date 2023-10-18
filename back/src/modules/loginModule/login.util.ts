@@ -1,8 +1,8 @@
 import * as jwt from "jsonwebtoken";
 import * as crypto from "crypto";
-import { userInfo } from "./login.type";
+import { userInfoDTO } from "./login.type";
 
-export const userInfoString = (userInfo: userInfo): string => {
+export const userInfoString = (userInfo: userInfoDTO): string => {
         const id = userInfo.id;
         const name = userInfo.name;
         const email = userInfo.email;
