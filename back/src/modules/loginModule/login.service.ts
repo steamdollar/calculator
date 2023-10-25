@@ -36,7 +36,9 @@ export class LoginService {
                                         )
                                 );
                         default:
-                                return "http://localhost:3000";
+                                return this.configService.get(
+                                        "FRONTEND_ADDRESS"
+                                );
                 }
         }
 

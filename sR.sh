@@ -37,7 +37,8 @@ then
     npm start
 else
 
-    redis-server &
+    sudo service redis-server start &
+    # redis-server &
 
     cd back
     npm run start &
