@@ -1,3 +1,4 @@
+import { useCookies } from "react-cookie";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
@@ -13,6 +14,12 @@ const Navigator = styled.nav`
 `;
 
 export function Header() {
+        const [userInfo, setUserInfo] = useCookies(["userInfo"]);
+
+        const as = () => {
+                console.log(userInfo);
+        };
+
         return (
                 <Navigator>
                         <span>
@@ -30,6 +37,7 @@ export function Header() {
                         <span>
                                 <Link to="/login">Login</Link>
                         </span>
+                        <span onClick={as}>asdasdads</span>
                 </Navigator>
         );
 }

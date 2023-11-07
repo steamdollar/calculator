@@ -24,7 +24,7 @@ export class LoginController {
 
                 // TODO : cookie config 변수화 > recycle
                 res.cookie("userInfo", cookieString, {
-                        httpOnly: true,
+                        // httpOnly: true,
                         secure: process.env.NODE_ENV === "production",
                         maxAge: 1000 * 60 * 60 * 24,
                 });
@@ -39,7 +39,7 @@ export class LoginController {
                 );
 
                 res.cookie("userInfo", cookieString, {
-                        httpOnly: true,
+                        // httpOnly: true,
                         secure: process.env.NODE_ENV === "production",
                         maxAge: 1000 * 60 * 60 * 24,
                 });
