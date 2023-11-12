@@ -1,11 +1,11 @@
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
-import { encodeUserInfo, userInfoString, encrypter } from "./login.util";
+import { encrypter } from "./login.util";
 import { makeResponseObj } from "../../@types/response";
 import {
         GoogleOAuth,
         reqTokenDTO,
-        KakaoOauth,
+        KakaoOAuth,
         IOAuthProvider,
 } from "./login.type";
 import { ErrorMessage } from "../../@types/error";
@@ -17,12 +17,11 @@ export class LoginService {
         constructor(private configService: ConfigService) {
                 this.providers = new Map<string, IOAuthProvider>();
                 this.providers.set("google", new GoogleOAuth());
-                this.providers.set("kakao", new KakaoOauth());
+                this.providers.set("kakao", new KakaoOAuth());
         }
 
         async toOauthLoginPage(party: string) {
                 const provider = this.providers.get(party);
-
 
                 if (!provider) return this.configService.get("FRONT_ADDRESS");
 

@@ -1,6 +1,5 @@
 import { ErrorMessage } from "../../@types/error";
 import axios from "axios";
-import { encrypter } from "./login.util";
 import { Ids } from "../../models/ids.model";
 
 export interface userInfoDTO {
@@ -131,14 +130,14 @@ export class GoogleOAuth extends OAuthService implements IOAuthProvider {
 }
 
 // TODO : type 명확히 지정
-export class KakaoOauth extends OAuthService implements IOAuthProvider {
+export class KakaoOAuth extends OAuthService implements IOAuthProvider {
         static oAuthUrl = "https://kauth.kakao.com/oauth/authorize";
         static tokenUrl = "https://kauth.kakao.com/oauth/token";
         static exchangeTokenUrl = "https://kapi.kakao.com/v2/user/me";
 
         redirectToProvider(clientId: any, redirectUrl: any): string {
                 const redirect_url =
-                        `${KakaoOauth.oAuthUrl}` +
+                        `${KakaoOAuth.oAuthUrl}` +
                         `?client_id=${clientId}` +
                         `&redirect_uri=${redirectUrl}` +
                         `&response_type=code`;
@@ -160,7 +159,7 @@ export class KakaoOauth extends OAuthService implements IOAuthProvider {
 
                 try {
                         const response = await axios.post(
-                                KakaoOauth.tokenUrl,
+                                KakaoOAuth.tokenUrl,
                                 qs,
                                 {
                                         headers: headers,
@@ -177,7 +176,7 @@ export class KakaoOauth extends OAuthService implements IOAuthProvider {
         async getUserInfo(tokenResult) {
                 try {
                         const response = await axios.get(
-                                KakaoOauth.exchangeTokenUrl,
+                                KakaoOAuth.exchangeTokenUrl,
                                 {
                                         headers: {
                                                 Authorization: `${tokenResult.token_type} ${tokenResult.access_token}`,
