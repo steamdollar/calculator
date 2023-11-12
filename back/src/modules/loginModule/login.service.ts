@@ -23,6 +23,7 @@ export class LoginService {
         async toOauthLoginPage(party: string) {
                 const provider = this.providers.get(party);
 
+
                 if (!provider) return this.configService.get("FRONT_ADDRESS");
 
                 return provider.redirectToProvider(

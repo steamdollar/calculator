@@ -93,7 +93,7 @@ export class GoogleOAuth extends OAuthService implements IOAuthProvider {
                         return accessToken;
                 } catch (e) {
                         console.error(e);
-                        throw new ErrorMessage("failed to get google token");
+                        throw new ErrorMessage(1, "failed to get google token");
                 }
         }
 
@@ -123,6 +123,7 @@ export class GoogleOAuth extends OAuthService implements IOAuthProvider {
                 } catch (e) {
                         console.log(e);
                         throw new ErrorMessage(
+                                2,
                                 "failed to exchange google token to user info."
                         );
                 }
@@ -169,7 +170,7 @@ export class KakaoOauth extends OAuthService implements IOAuthProvider {
                         return response.data;
                 } catch (e) {
                         console.error(e);
-                        throw new ErrorMessage("failed to get kakao token");
+                        throw new ErrorMessage(1, "failed to get kakao token");
                 }
         }
 
@@ -198,6 +199,7 @@ export class KakaoOauth extends OAuthService implements IOAuthProvider {
                 } catch (e) {
                         console.log(e);
                         throw new ErrorMessage(
+                                2,
                                 "failed to exchange kakao token to user info."
                         );
                 }
