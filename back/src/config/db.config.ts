@@ -4,6 +4,7 @@ import { Coin } from "../models/coin.model";
 import { Gecko } from "../models/gecko.model";
 import { SequelizeModuleOptions } from "@nestjs/sequelize";
 import { ConfigService } from "@nestjs/config";
+import { Ids } from "../models/ids.model";
 
 export const sequelizeConfig = (
         configService: ConfigService
@@ -14,5 +15,5 @@ export const sequelizeConfig = (
         username: configService.get("DB_USER"),
         password: configService.get("DB_PASSWORD"),
         database: configService.get("DB_NAME"),
-        models: [Wallet, Trading, Gecko, Coin],
+        models: [Wallet, Trading, Gecko, Coin, Ids],
 });

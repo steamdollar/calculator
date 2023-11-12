@@ -9,7 +9,7 @@ import {
         initGeckochainId,
         initTokenList,
         initTradingRecord,
-} from "./utils/dbRef";
+} from "./utils/db/dbRef";
 import { Trading } from "./models/trading.model";
 import { Coin } from "./models/coin.model";
 import { Gecko } from "./models/gecko.model";
@@ -31,12 +31,10 @@ async function bootstrap() {
                         await Wallet.create({
                                 address: configService.get("shield1"),
                                 name: "shield1",
-                                purpose: "airdrop",
                         });
                         await Wallet.create({
                                 address: configService.get("ledger1"),
                                 name: "ledger1",
-                                purpose: "airdrop, saving",
                         });
 
                         initTradingRecord.forEach(async (record) => {

@@ -12,9 +12,6 @@ export class Wallet extends Model {
         @Column(DataType.STRING(32))
         name: string;
 
-        @Column(DataType.STRING(32))
-        purpose: string;
-
         @HasMany(() => Trading, { foreignKey: "wallet", as: "walletTrading" })
         tradings: Trading[];
 }
