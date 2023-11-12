@@ -48,7 +48,7 @@ export class CoinService {
 
                         return {
                                 isToken: true,
-                                decimals: Number(decimals),
+                                decimals: +decimals,
                                 name,
                                 symbol,
                         };
