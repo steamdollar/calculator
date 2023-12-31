@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Query } from "@nestjs/common";
 
 import { responseObj } from "../../@types/response";
 import { BalanceService } from "./balance.service";
-import { balanceResponse } from "./balance.utils";
+import { balanceResponse } from "./balance.type";
 
 @Controller("balance")
 export class BalanceController {

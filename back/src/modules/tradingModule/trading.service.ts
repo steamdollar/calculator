@@ -3,7 +3,7 @@ import { InjectModel } from "@nestjs/sequelize";
 import { Sequelize } from "sequelize-typescript";
 import { Trading } from "../../models/trading.model";
 import { makeResponseObj, responseObj } from "../../@types/response";
-import { receivedDataForSave } from "./tradingType";
+import { receivedDataForSave } from "./trading.type";
 
 @Injectable()
 export class TradingService {
