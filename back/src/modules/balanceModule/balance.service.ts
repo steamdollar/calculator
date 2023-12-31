@@ -3,20 +3,18 @@ import { InjectModel } from "@nestjs/sequelize";
 import { Coin } from "../../models/coin.model";
 import { makeResponseObj, responseObj } from "../../@types/response";
 import { Web3Provider } from "../web3Module/web3.provider";
-import {
-        balanceResponse,
-        getTokenBalance,
-        makeBalanceResponse,
-        selectService,
-} from "./balance.utils";
+
 import { RedisService } from "../../utils/redis.service";
+import { BalanceUtils } from "./balance.provider";
+import { balanceResponse } from "./balance.type";
 
 @Injectable()
 export class BalanceService {
         constructor(
                 @InjectModel(Coin) private coinModel: typeof Coin,
                 private readonly web3Provider: Web3Provider,
-                private readonly redisService: RedisService
+                private readonly redisService: RedisService,
+                private readonly balanceUtils: BalanceUtils
         ) {}
 
         async getBalance(
@@ -32,7 +30,9 @@ export class BalanceService {
                         new Date().getTime() - assetData.timestamp < 60 * 1000
                 ) {
                         console.log("send cached data");
-                        return makeBalanceResponse(assetData.data);
+                        return this.balanceUtils.makeBalanceResponse(
+                                assetData.data
+                        );
                 }
 
                 try {
@@ -42,22 +42,25 @@ export class BalanceService {
                                 },
                         });
 
-                        const balances = await getTokenBalance(
-                                address,
-                                tokenList.map((v) => v.dataValues.ca),
-                                this.web3Provider.getProvider(
-                                        selectService(chain),
+                        const balances =
+                                await this.balanceUtils.getTokenBalance(
+                                        address,
+                                        tokenList.map((v) => v.dataValues.ca),
+                                        this.web3Provider.getProvider(
+                                                this.balanceUtils.selectService(
+                                                        chain
+                                                ),
+                                                chain
+                                        ),
                                         chain
-                                ),
-                                chain
-                        );
+                                );
 
                         await this.redisService.set(key, {
                                 data: balances,
                                 timestamp: new Date().getTime(),
                         });
 
-                        return makeBalanceResponse(balances);
+                        return this.balanceUtils.makeBalanceResponse(balances);
                 } catch (e) {
                         console.log(e.message);
                         return makeResponseObj(1, e.message);

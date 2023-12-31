@@ -16,6 +16,7 @@ import { InitService } from "./utils/init.service";
 import { LoginModule } from "./modules/loginModule/login.module";
 import { sequelizeConfig } from "./config/db.config";
 import { CheckCookieMiddleware } from "./utils/cookieMiddleware";
+import { LoginProvider } from "./modules/loginModule/login.provider";
 
 @Module({
         imports: [
@@ -33,7 +34,7 @@ import { CheckCookieMiddleware } from "./utils/cookieMiddleware";
                 // Web3Module,
         ],
         controllers: [AppController],
-        providers: [AppService, InitService],
+        providers: [AppService, InitService, LoginProvider],
 })
 export class AppModule {
         constructor(private sequelize: Sequelize) {}

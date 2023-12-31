@@ -3,13 +3,17 @@ import { ModuleRef } from "@nestjs/core";
 import { Request, Response, NextFunction } from "express";
 import { ConfigService } from "@nestjs/config";
 import * as jwt from "jsonwebtoken";
-import { decrypter } from "../modules/loginModule/login.util";
+
 import { Ids } from "../models/ids.model";
 import { TxService } from "./tx.service";
+import { LoginProvider } from "../modules/loginModule/login.provider";
 
 @Injectable()
 export class CheckCookieMiddleware implements NestMiddleware {
-        constructor(private configService: ConfigService) {}
+        constructor(
+                private configService: ConfigService,
+                private readonly loginProvider: LoginProvider
+        ) {}
 
         async use(req: Request, res: Response, next: NextFunction) {
                 try {
@@ -25,7 +29,7 @@ export class CheckCookieMiddleware implements NestMiddleware {
                                         )
                                 );
 
-                                const id = decrypter(
+                                const id = this.loginProvider.decrypter(
                                         decoded.data.s,
                                         this.configService.get<string>(
                                                 "encrypt_code"

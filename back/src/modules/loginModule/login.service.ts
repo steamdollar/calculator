@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
-import { encrypter } from "./login.util";
+
 import { makeResponseObj } from "../../@types/response";
 import {
         GoogleOAuth,
@@ -9,12 +9,16 @@ import {
         IOAuthProvider,
 } from "./login.type";
 import { ErrorMessage } from "../../@types/error";
+import { LoginProvider } from "./login.provider";
 
 @Injectable()
 export class LoginService {
         private providers: Map<string, IOAuthProvider>;
 
-        constructor(private configService: ConfigService) {
+        constructor(
+                private configService: ConfigService,
+                private readonly loginProviders: LoginProvider
+        ) {
                 this.providers = new Map<string, IOAuthProvider>();
                 this.providers.set("google", new GoogleOAuth());
                 this.providers.set("kakao", new KakaoOAuth());
@@ -54,7 +58,7 @@ export class LoginService {
                                 accessToken
                         );
 
-                        const s = encrypter(
+                        const s = this.loginProviders.encrypter(
                                 JSON.stringify(userInfo),
                                 this.configService.get("encrypt_code")
                         );

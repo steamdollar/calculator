@@ -12,16 +12,17 @@ import {
         coinListResponse,
 } from "./coin.type";
 import { Web3Provider } from "../web3Module/web3.provider";
-import { ContractFactory, ethers } from "ethers";
+import { ethers } from "ethers";
 import { minErc20Abi } from "../../utils/abi";
-import { selectService } from "../balanceModule/balance.utils";
+import { BalanceUtils } from "../balanceModule/balance.provider";
 
 @Injectable()
 export class CoinService {
         constructor(
                 @InjectModel(Coin) private coinModel: typeof Wallet,
                 private TxService: TxService,
-                private readonly web3Provider: Web3Provider
+                private readonly web3Provider: Web3Provider,
+                private readonly balanceProvider: BalanceUtils
         ) {}
 
         async checkIfCoin(
@@ -30,7 +31,7 @@ export class CoinService {
                 const { address, chain } = coinForCheck;
 
                 const provider = this.web3Provider.getProvider(
-                        selectService(chain),
+                        this.balanceProvider.selectService(chain),
                         chain
                 );
                 try {
