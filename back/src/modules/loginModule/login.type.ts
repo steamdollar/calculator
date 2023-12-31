@@ -109,7 +109,7 @@ export class GoogleOAuth extends OAuthService implements IOAuthProvider {
 
                         const googleData = response.data;
 
-                        await isRegistered("google", response.data.id);
+                        // await isRegistered("google", response.data.id);
 
                         const userInfo: userInfoDTO = {
                                 id: +googleData.id,
@@ -184,7 +184,7 @@ export class KakaoOAuth extends OAuthService implements IOAuthProvider {
                                 }
                         );
 
-                        await isRegistered("kakao", response.data.id);
+                        // await isRegistered("kakao", response.data.id);
 
                         // id도 같이 클라이언트에 줘야 요청 받고 이게 누구 요청인지 확인 가능
                         const userInfo = {

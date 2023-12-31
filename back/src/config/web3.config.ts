@@ -35,7 +35,7 @@ export const ethersFactory = (configService: ConfigService) => {
                         },
                 },
                 infura: {
-                        mainnet: {
+                        Ethereum: {
                                 url: "mainnet",
                                 apiKey: configService.get("INFURA_KEY"),
                         },
@@ -47,6 +47,10 @@ export const ethersFactory = (configService: ConfigService) => {
                         //                 "INFURA_LINEA_MAINNET_KEY"
                         //         ),
                         // },
+                        Matic: {
+                                url: "matic",
+                                apiKey: configService.get("INFURA_KEY"),
+                        },
                 },
                 etc: {
                         avax: {

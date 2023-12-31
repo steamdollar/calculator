@@ -21,15 +21,12 @@ export class balanceResponse {
 }
 
 export const selectService = (chain) => {
-        const forAlchemy = [
-                "Ethereum",
-                "Arbitrum One",
-                "Matic",
-                "goerli",
-                "Optimism",
-        ];
+        const forAlchemy = ["Arbitrum One", "goerli", "Optimism"];
+        const forInfura = ["Ethereum", "Matic"];
         if (forAlchemy.includes(chain)) {
                 return "alchemy";
+        } else if (forInfura.includes(chain)) {
+                return "infura";
         } else {
                 return "etc";
         }
@@ -66,6 +63,7 @@ const getNativeTokenInfo = async (
 
         const [ids, nativeTokenSymbol] = getNativeTokenSymbol(chain);
 
+        // error 429.. 예전엔 안났는데 최근 policy가 변한 듯..
         const response = await axios.get(
                 `https://api.coingecko.com/api/v3/simple/price?ids=${ids}&vs_currencies=${fiat}`
         );
