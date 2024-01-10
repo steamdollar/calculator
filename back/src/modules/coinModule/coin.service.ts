@@ -14,7 +14,7 @@ import {
 import { Web3Provider } from "../web3Module/web3.provider";
 import { ethers } from "ethers";
 import { minErc20Abi } from "../../utils/abi";
-import { BalanceUtils } from "../balanceModule/balance.provider";
+import { BalanceProvider } from "../balanceModule/balance.provider";
 
 @Injectable()
 export class CoinService {
@@ -22,7 +22,7 @@ export class CoinService {
                 @InjectModel(Coin) private coinModel: typeof Wallet,
                 private TxService: TxService,
                 private readonly web3Provider: Web3Provider,
-                private readonly balanceProvider: BalanceUtils
+                private readonly balanceProvider: BalanceProvider
         ) {}
 
         async checkIfCoin(

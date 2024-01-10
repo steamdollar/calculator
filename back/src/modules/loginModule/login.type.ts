@@ -9,10 +9,6 @@ export interface userInfoDTO {
         pic?: string;
 }
 
-// 이런 것까지 굳이 타입을 만들어서 쓸 필요가 있나?
-// 이건 어차피프론트에서 데이터 전달하는 것도 아니고 백엔드에서만 상수적으로 사용하는거니까
-// 타입을 정의할 필요없을 것 같은데?
-// 그냥 인수 두개 따로 줘도 됨..
 // interface OAuthRedirectDTO {
 //         clientId: string;
 //         redirectUrl: string;
@@ -25,20 +21,7 @@ export interface reqTokenDTO {
         grant_type: string;
 }
 
-const isRegistered = async (party, id) => {
-        const isRegistered = await Ids.findOne({
-                where: {
-                        ids: id,
-                        party: party,
-                },
-        });
-
-        if (isRegistered === null) {
-                await Ids.create({ party, ids: id });
-        }
-};
-
-// abstract factory pattern을 사용해보자..
+// abstract factory pattern
 abstract class OAuthService {
         oAuthUrl: string;
         tokenUrl: string;

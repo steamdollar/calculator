@@ -11,7 +11,7 @@ import { Gecko } from "../../models/gecko.model";
 import { balance, balanceResponse } from "./balance.type";
 
 @Injectable()
-export class BalanceUtils {
+export class BalanceProvider {
         constructor() {}
 
         selectService = (chain) => {

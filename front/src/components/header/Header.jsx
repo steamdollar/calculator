@@ -1,6 +1,9 @@
+import { useContext } from "react";
 import { useCookies } from "react-cookie";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import { AuthContext } from "../../util/Usercontext";
+import { parseJwt } from "../../util/cookieParse";
 
 const Navigator = styled.nav`
         border: 1px solid black;
@@ -14,10 +17,10 @@ const Navigator = styled.nav`
 `;
 
 export function Header() {
-        const [userInfo, setUserInfo] = useCookies(["userInfo"]);
+        const { authState } = useContext(AuthContext);
 
         const as = () => {
-                console.log(userInfo);
+                console.log(parseJwt(authState.userInfo));
         };
 
         return (
@@ -38,6 +41,7 @@ export function Header() {
                                 <Link to="/login">Login</Link>
                         </span>
                         <span onClick={as}>asdasdads</span>
+                        <span>{parseJwt(authState.userinfo)}</span>
                 </Navigator>
         );
 }

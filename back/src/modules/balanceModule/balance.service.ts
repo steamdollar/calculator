@@ -5,7 +5,7 @@ import { makeResponseObj, responseObj } from "../../@types/response";
 import { Web3Provider } from "../web3Module/web3.provider";
 
 import { RedisService } from "../../utils/redis.service";
-import { BalanceUtils } from "./balance.provider";
+import { BalanceProvider } from "./balance.provider";
 import { balanceResponse } from "./balance.type";
 
 @Injectable()
@@ -14,7 +14,7 @@ export class BalanceService {
                 @InjectModel(Coin) private coinModel: typeof Coin,
                 private readonly web3Provider: Web3Provider,
                 private readonly redisService: RedisService,
-                private readonly balanceUtils: BalanceUtils
+                private readonly balanceUtils: BalanceProvider
         ) {}
 
         async getBalance(

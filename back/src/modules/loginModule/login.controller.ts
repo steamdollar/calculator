@@ -23,6 +23,8 @@ export class LoginController {
                         oAuthCode
                 );
 
+                console.log(cookieString);
+
                 const token = jwt.sign(
                         { data: cookieString },
                         this.configService.get("encode_salt"),
@@ -31,6 +33,7 @@ export class LoginController {
                         }
                 );
 
+                // console.log(token);
                 res.cookie("userInfo", token, {
                         // httpOnly: true,
                         secure: process.env.NODE_ENV === "production",

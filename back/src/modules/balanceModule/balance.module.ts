@@ -7,11 +7,11 @@ import { BalanceController } from "./balance.controller";
 import { BalanceService } from "./balance.service";
 import { Gecko } from "../../models/gecko.model";
 import { RedisService } from "../../utils/redis.service";
-import { BalanceUtils } from "./balance.provider";
+import { BalanceProvider } from "./balance.provider";
 
 @Module({
         imports: [SequelizeModule.forFeature([Coin, Gecko]), Web3Module],
         controllers: [BalanceController],
-        providers: [BalanceService, InitService, RedisService, BalanceUtils],
+        providers: [BalanceService, InitService, RedisService, BalanceProvider],
 })
 export class BalanceModule {}

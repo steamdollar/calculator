@@ -7,11 +7,10 @@ import { CoinRegisterForm } from "./components/coinModule/coinRegisterForm";
 import MainContainer from "./globalDesign";
 import { Login } from "./components/loginModule/Login";
 import { AuthProvider } from "./util/Usercontext";
-import { CookiesProvider } from "react-cookie";
 
 function App() {
         return (
-                <CookiesProvider>
+                <AuthProvider>
                         <div className="App">
                                 <MainContainer>
                                         <Header />
@@ -48,7 +47,7 @@ function App() {
                                         </Routes>
                                 </MainContainer>
                         </div>
-                </CookiesProvider>
+                </AuthProvider>
         );
 }
 

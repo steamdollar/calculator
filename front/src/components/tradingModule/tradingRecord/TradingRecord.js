@@ -5,5 +5,5 @@ export function TradingRecord() {
         //const dispatch = useDispatch();
         // const varis = useSelector((state) => state);
 
-        return <div>훠어어어</div>;
+        return <div>divdiv</div>;
 }

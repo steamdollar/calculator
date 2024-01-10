@@ -1,27 +1,31 @@
 import React, { createContext, useState, useEffect, useContext } from "react";
 import { useCookies } from "react-cookie";
 
-const UserContext = createContext();
+// const UserContext = createContext();
 
-export const useUser = () => useContext(UserContext);
+// export const useUser = () => useContext(UserContext);
 
 // Create a context
-export const AuthContext = createContext(null);
+export const AuthContext = createContext();
 
 // Create a provider component
 export const AuthProvider = ({ children }) => {
         const [cookies] = useCookies(["userInfo"]); // The name of your cookie
-        const [user, setUser] = useState(null);
+        const [authState, setAuthState] = useState({
+                isAuthenticated: !!cookies.userInfo,
+                userInfo: cookies.userInfo || null,
+        });
 
         useEffect(() => {
                 // If the userInfo cookie is present, set the user state to its value
-                if (cookies.userInfo) {
-                        setUser(cookies.userInfo);
-                }
+                setAuthState({
+                        isAuthenticated: !!cookies.userInfo,
+                        userInfo: cookies.userInfo || null,
+                });
         }, [cookies]);
 
         return (
-                <AuthContext.Provider value={{ user, setUser }}>
+                <AuthContext.Provider value={{ authState }}>
                         {children}
                 </AuthContext.Provider>
         );

@@ -24,3 +24,5 @@ export const alertIfSyntaxError = (addrInfoDTO) => {
         }
         return true;
 };
+
+export const cookieDecrypt = () => {};
